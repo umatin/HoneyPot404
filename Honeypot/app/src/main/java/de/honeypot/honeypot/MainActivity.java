@@ -17,7 +17,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         SharedPreferences sharedPref = getSharedPreferences("settings", Context.MODE_PRIVATE);
-        String userName = sharedPref.getString("userName", "0");
+        String userName = sharedPref.getString("userName", "");
 
         // no saved userName
         if (userName.equals("")) {
