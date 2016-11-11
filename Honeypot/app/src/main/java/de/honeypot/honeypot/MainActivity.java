@@ -7,7 +7,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
@@ -18,7 +17,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         SharedPreferences sharedPref = getSharedPreferences("settings", Context.MODE_PRIVATE);
-        String userName = sharedPref.getString("userName", "1");
+        String userName = sharedPref.getString("userName", "0");
 
         // no saved userName
         if (userName.equals("")) {
