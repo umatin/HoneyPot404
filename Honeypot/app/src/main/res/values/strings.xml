@@ -1,3 +1,6 @@
 <resources>
     <string name="app_name">Honeypot</string>
+    <string name="fragment_profile">Profile</string>
+    <string name="fragment_friends">Friends</string>
+    <string name="fragment_stats">Stats</string>
 </resources>
