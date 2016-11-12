@@ -10,4 +10,10 @@
 
     <string name="menu_refresh">Refresh</string>
     <string name="menu_profile">Edit Profile</string>
+
+    <string name="first_launch1">Hi! How are you?</string>
+    <string name="first_launch2">I\'d like to know more about you.</string>
+    <string name="first_launch3">For example... \nWhat\'s your name?</string>
+    <string name="button">Done!</string>
+
 </resources>
