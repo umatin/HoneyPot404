@@ -40,7 +40,7 @@ public class MainActivity extends AppCompatActivity {
             return;
         }
 
-        GPS.init();
+        GPS.init(this);
 
         if(ContextCompat.checkSelfPermission(this, Manifest.permission.INTERNET)== PackageManager.PERMISSION_DENIED){
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.INTERNET}, 2811);
