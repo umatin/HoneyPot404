@@ -88,9 +88,10 @@ public class MainActivity extends AppCompatActivity {
             return fragment;
         }
 
+        // Changed to 2 for 2 tabs
         @Override
         public int getCount() {
-            return 3;
+            return 2;
         }
 
         @Override
