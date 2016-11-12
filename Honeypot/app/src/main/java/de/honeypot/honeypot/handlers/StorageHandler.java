@@ -13,7 +13,8 @@ public class StorageHandler {
 
     // data filePath
     public static String storageDirectory(String rep) {
-        return Environment.getExternalStorageDirectory().getPath() + "/Android/data/de.honeypot.honeypot/" + rep;
+        //return Environment.getExternalStorageDirectory().getPath() + "/Android/data/de.honeypot.honeypot/" + rep;
+        return Environment.getDataDirectory().getPath() + "/de.honeypot.honeypot/" + rep;
     }
 
     public static Bitmap readFileToBitmap(String fileName) {
