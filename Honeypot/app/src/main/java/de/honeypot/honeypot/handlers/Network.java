@@ -141,7 +141,7 @@ public class Network {// bitte auf alle Methoden mit einem eigenen Task/Thread z
 
         try{
             HttpClient client = new DefaultHttpClient();
-            HttpGet request = new HttpGet(link+"/nearby?lat="+lat+"&lon="+lon+"&token="+token);
+            HttpGet request = new HttpGet(link+"/nearby/"+lat+"/"+lon+"?token="+token);
             HttpResponse response = client.execute(request);
             ByteArrayOutputStream out = new ByteArrayOutputStream();
             response.getEntity().writeTo(out);

@@ -15,12 +15,15 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.widget.Toast;
 
 import de.honeypot.honeypot.handlers.*;
 import de.honeypot.honeypot.services.GPS;
 import de.honeypot.honeypot.services.WifiDirect;
 
 public class MainActivity extends AppCompatActivity {
+
+    public static SharedPreferences sharedPref;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,8 +32,10 @@ public class MainActivity extends AppCompatActivity {
         //Init for getting device mac address as soon as possible
         WifiDirect.init(this);
 
-        SharedPreferences sharedPref = getSharedPreferences("settings", Context.MODE_PRIVATE);
+        MainActivity.sharedPref = getSharedPreferences("settings", Context.MODE_PRIVATE);
         String userName = sharedPref.getString("userName", "");
+        Toast.makeText(this,"token=" + sharedPref.getString("token", ""),Toast.LENGTH_LONG);
+        Network.init(sharedPref.getString("token", ""), sharedPref.getString("id", ""));
 
         // no saved userName
         if (userName.equals("")) {

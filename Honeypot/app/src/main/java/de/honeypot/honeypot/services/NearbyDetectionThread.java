@@ -27,7 +27,16 @@ public class NearbyDetectionThread extends Thread {
             try{Thread.sleep(DETECTION_PERIOD);}catch(InterruptedException e){}
 
             Location location = GPS.getLocation();
-            Network.nearby(location.getLatitude(), location.getLongitude());
+            double latitude = 0.0;
+            double longitude = 0.0;
+
+            if(location == null)
+            {
+                latitude = location.getLatitude();
+                longitude = location.getLongitude();
+            }
+
+            String[] data = Network.nearby(latitude, longitude);
         }
     }
 }
