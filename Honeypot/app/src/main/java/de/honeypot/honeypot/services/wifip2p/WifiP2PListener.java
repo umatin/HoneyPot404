@@ -1,4 +1,4 @@
-package de.honeypot.honeypot.wifip2p;
+package de.honeypot.honeypot.services.wifip2p;
 
 /**
  * Created by Geosearchef on 12.11.2016.

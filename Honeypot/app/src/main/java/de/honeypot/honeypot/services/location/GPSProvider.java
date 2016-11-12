@@ -1,4 +1,4 @@
-package de.honeypot.honeypot.location;
+package de.honeypot.honeypot.services.location;
 
 import android.Manifest;
 import android.app.Activity;
@@ -9,12 +9,11 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
-import android.os.health.SystemHealthManager;
 import android.provider.Settings;
 import android.support.v4.app.ActivityCompat;
 import android.widget.Toast;
 
-import de.honeypot.honeypot.location.testing.GPSListener;
+import de.honeypot.honeypot.services.location.testing.GPSListener;
 
 /**
  * Created by Geosearchef on 12.11.2016.

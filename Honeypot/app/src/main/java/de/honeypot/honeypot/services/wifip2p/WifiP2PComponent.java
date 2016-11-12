@@ -1,4 +1,4 @@
-package de.honeypot.honeypot.wifip2p;
+package de.honeypot.honeypot.services.wifip2p;
 
 import android.app.Activity;
 import android.content.BroadcastReceiver;
@@ -9,7 +9,6 @@ import android.net.wifi.WifiManager;
 import android.net.wifi.p2p.WifiP2pDevice;
 import android.net.wifi.p2p.WifiP2pDeviceList;
 import android.net.wifi.p2p.WifiP2pManager;
-import android.support.annotation.Nullable;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -17,8 +16,6 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.List;
-
-import de.honeypot.honeypot.wifip2p.WifiP2PListener;
 
 /**
  * Created by Geosearchef on 12.11.2016.

@@ -2,8 +2,8 @@ package de.honeypot.honeypot.services;
 
 import android.app.Activity;
 
-import de.honeypot.honeypot.wifip2p.WifiP2PComponent;
-import de.honeypot.honeypot.wifip2p.WifiP2PListener;
+import de.honeypot.honeypot.services.wifip2p.WifiP2PComponent;
+import de.honeypot.honeypot.services.wifip2p.WifiP2PListener;
 
 /**
  * Created by Geosearchef on 12.11.2016.
