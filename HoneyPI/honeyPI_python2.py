@@ -6,10 +6,10 @@
 #python 3
 
 #imports:
-import urllib.request
+import urllib2
 from time import sleep
-from grovepi import *
-from grove_rgb_lcd import *
+from groveLib.grovepi import *
+from groveLib.grove_rgb_lcd import *
 import json
 import os
 
@@ -20,7 +20,7 @@ import os
 confFilePath = "/etc/hostapd/hostapd.conf"
 configPath = "honeyConfig.txt"
 
-link = "honeypot4431.cloudapp.net"
+link = "http://honeypot4431.cloudapp.net"
 
 
 
@@ -35,7 +35,7 @@ class handleEverything():
             self.token = self.getToken()
             setConfig(token)
 
-        print token
+        print(token)
             
 
         #self.ssid =
@@ -72,21 +72,21 @@ class handleEverything():
 
     def getSSID_Name_Color(self):
         response= self.makeHTTPRequest("hotspot/update?token="+self.token)
-        print response
+        print(response)
         j = json.loads(response)
         return j["SSID"], j["name"], j["color"]
     
 
     def getToken(self):
         response=self.makeHTTPRequest("/hotspot/setup?secret=lebonbon")
-        print response
-        j = json.loads(response)
+        print(str(response))
+        j = json.loads(str(response))
         return j["token"]
         
 
 
     def makeHTTPRequest(self, sublink): #exp what to show/ who captured and get token and 
-        return urllib.request.urlopen(link + sublink).read()
+        return urllib2.urlopen(link + sublink).read().decode("utf-8")
 
 
                         #array mit 2 elementen
