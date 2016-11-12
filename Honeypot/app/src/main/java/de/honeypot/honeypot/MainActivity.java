@@ -1,15 +1,22 @@
 package de.honeypot.honeypot;
 
+import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.support.design.widget.TabLayout;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
+
+import de.honeypot.honeypot.handlers.*;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -25,7 +32,17 @@ public class MainActivity extends AppCompatActivity {
             Intent firstLaunchActivity = new Intent(this, FirstLaunchActivity.class);
             startActivity(firstLaunchActivity);
             finish();
+            return;
         }
+
+        if(ContextCompat.checkSelfPermission(this, Manifest.permission.INTERNET)== PackageManager.PERMISSION_DENIED){
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.INTERNET}, 2811);
+        }
+        if(ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)== PackageManager.PERMISSION_DENIED){
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 2812);
+        }
+
+        StorageHandler.setNoMedia();
 
         // setContentView
         setContentView(R.layout.activity_main);
@@ -43,8 +60,12 @@ public class MainActivity extends AppCompatActivity {
         tabLayout.addTab(tabLayout.newTab().setText(getString(R.string.fragment_stats)));
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
 
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
     }
 
+    // PagerAdapter
     public class PagerAdapter extends FragmentPagerAdapter {
         PagerAdapter(FragmentManager fragmentManager) {
             super(fragmentManager);

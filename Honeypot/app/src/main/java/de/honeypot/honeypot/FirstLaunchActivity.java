@@ -88,7 +88,7 @@ public class FirstLaunchActivity extends AppCompatActivity {
 
 
 
-                    Thread t2 = new Thread() {
+                    Thread t2 = new Thread() {  //HTTP get anfrage über einen eigenen Thread
                         public void run() {
 
 
