@@ -5,12 +5,12 @@
                 <item name="colorPrimary">@color/colorPrimary</item>
                 <item name="colorPrimaryDark">@color/colorPrimary</item>
                 <item name="colorAccent">@color/colorPrimaryDark</item>
-                <item name="android:colorBackground">@android:color/background_light</item>
+                <item name="android:colorBackground">@color/colorBackground</item>
                 <item name="android:colorForeground">@android:color/black</item>
                 <item name="android:navigationBarColor">@android:color/black</item>
                 <item name="android:statusBarColor">?android:attr/colorPrimaryDark</item>
                 <item name="android:textColorPrimary">@android:color/black</item>
                 <item name="android:textColorPrimaryInverse">@android:color/white</item>
-                <item name="android:windowBackground">@android:color/white</item>
+                <item name="android:windowBackground">@color/colorBackground</item>
         </style>
 </resources>
