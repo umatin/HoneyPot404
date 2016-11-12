@@ -18,7 +18,7 @@ public class CircularImage {
 
         int width = getScreenSize(c).x;
 
-        return Math.round(width / 4);
+        return Math.round(width / 3);
     }
 
     // friends

@@ -7,8 +7,8 @@
 
     <ImageView
         android:id="@+id/imageView2"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_centerVertical="true"
@@ -22,6 +22,7 @@
         android:layout_alignTop="@+id/imageView2"
         android:layout_toEndOf="@+id/imageView2"
         android:layout_toRightOf="@+id/imageView2"
+        android:padding="8dp"
         android:text="@string/name" />
 
     <TextView
@@ -31,6 +32,7 @@
         android:layout_centerVertical="true"
         android:layout_toEndOf="@+id/imageView2"
         android:layout_toRightOf="@+id/imageView2"
+        android:padding="8dp"
         android:text="@string/score" />
 
     <TextView
@@ -40,5 +42,6 @@
         android:layout_alignBottom="@+id/imageView2"
         android:layout_toEndOf="@+id/imageView2"
         android:layout_toRightOf="@+id/imageView2"
+        android:padding="8dp"
         android:text="@string/meet_count" />
 </RelativeLayout>
