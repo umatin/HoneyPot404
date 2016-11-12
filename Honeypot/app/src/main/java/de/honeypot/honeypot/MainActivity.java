@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.net.*;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
@@ -20,6 +21,10 @@ import android.widget.Toast;
 import de.honeypot.honeypot.handlers.*;
 import de.honeypot.honeypot.services.GPS;
 import de.honeypot.honeypot.services.WifiDirect;
+import android.util.Log;
+
+import de.honeypot.honeypot.handlers.*;
+import de.honeypot.honeypot.handlers.Network;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -36,6 +41,9 @@ public class MainActivity extends AppCompatActivity {
         String userName = sharedPref.getString("userName", "");
 
         Network.init(sharedPref.getString("token", ""), sharedPref.getString("id", ""));
+
+
+
 
         // no saved userName
         if (userName.equals("")) {

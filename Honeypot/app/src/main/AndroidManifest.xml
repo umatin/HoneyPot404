@@ -2,7 +2,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="de.honeypot.honeypot">
 
-
     <uses-permission
         android:name="android.permission.ACCESS_COARSE_LOCATION"
         android:required="true" />
@@ -48,11 +47,11 @@
             android:name=".FirstLaunchActivity"
             android:screenOrientation="portrait" />
 
-        <activity android:name=".SetPictureActivity"></activity>
+        <activity android:name=".SetPictureActivity"/>
 
         <activity
             android:name=".EditProfile"
-            android:label="@string/title_activity_edit_profile"></activity>
+            android:label="@string/title_activity_edit_profile"/>
     </application>
 
 </manifest>

@@ -59,7 +59,13 @@ public class ProfileFragment extends Fragment {
         TextView textViewName = (TextView) getView().findViewById(R.id.textViewName);
         TextView textViewScore = (TextView) getView().findViewById(R.id.textViewScore);
         TextView textViewMeetCount = (TextView) getView().findViewById(R.id.textViewMeetCount);
+/*
 
+        String name = "", score = "", meetcount = "";
+
+        textViewName.setText(getResources().getString(R.string.name) + ":\n" + name);
+        textViewScore.setText(getResources().getString(R.string.score) + ":\n" + score);
+        textViewMeetCount.setText(getResources().getString(R.string.meet_count) + ":\n" + meetcount);*/
     }
 
     @Override
