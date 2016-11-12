@@ -1,12 +1,10 @@
 package de.honeypot.honeypot;
 
 import android.Manifest;
-import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
-import android.preference.PreferenceFragment;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
@@ -17,8 +15,6 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
-import android.view.MenuItem;
-import android.widget.Toast;
 
 import de.honeypot.honeypot.data.NearbyObject;
 import de.honeypot.honeypot.handlers.WifiP2PHandler;
@@ -45,15 +41,10 @@ public class MainActivity extends AppCompatActivity {
 
         Network.init(sharedPref.getString("token", ""), sharedPref.getString("id", ""));
 
-
-
-
         // no saved userName
         if (userName.equals("")) {
             Intent firstLaunchActivity = new Intent(this, FirstLaunchActivity.class);
             startActivity(firstLaunchActivity);
-            finish();
-            return;
         }
 
         GPS.init(this);

@@ -223,7 +223,7 @@ public class FirstLaunchActivity extends AppCompatActivity {
                     e.printStackTrace();
                     Log.i("Server Fehler", "");
                 }
-                openIntent();
+                //openIntent();
 
             }
         };
@@ -241,6 +241,9 @@ public class FirstLaunchActivity extends AppCompatActivity {
         });
     }
 
+    @Override
+    public void onBackPressed() {
+    }
 
     @Override
     protected void onPause() {
