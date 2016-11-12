@@ -22,7 +22,9 @@
             </intent-filter>
         </activity>
         <activity android:name=".FirstLaunchActivity" />
-        <activity android:name=".location.testing.GPSProviderTestActivity">
+        <activity android:name=".location.testing.GPSProviderTestActivity"
+            android:label="Honeypot GPSTest">
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
