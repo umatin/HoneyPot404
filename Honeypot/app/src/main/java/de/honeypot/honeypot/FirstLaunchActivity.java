@@ -35,6 +35,8 @@ import org.json.JSONObject;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
+import de.honeypot.honeypot.handlers.WifiDirect;
+
 public class FirstLaunchActivity extends AppCompatActivity {
 
     private static EditText nameField;
@@ -130,18 +132,19 @@ public class FirstLaunchActivity extends AppCompatActivity {
             }
         });
 
+        //Init for getting device mac address
+        WifiDirect.init(this);
     }
 
     // handle key press
     private void keyPress() {
-        final String name = nameField.getText().toString();
+        final String name = nameField.getText().toString().trim();
 
         if (name.equals("")){
             return;
         }
 
-        final String android_id = Settings.Secure.getString(getContentResolver(),
-                Settings.Secure.ANDROID_ID);
+        final String android_id = WifiDirect.getOwnDeviceAddress();
 
         editor = sharedPref.edit();
         editor.putString("userName", name);

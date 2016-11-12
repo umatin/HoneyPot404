@@ -10,6 +10,7 @@ import android.net.wifi.p2p.WifiP2pDevice;
 import android.net.wifi.p2p.WifiP2pDeviceList;
 import android.net.wifi.p2p.WifiP2pManager;
 import android.support.annotation.Nullable;
+import android.util.Log;
 import android.widget.Toast;
 
 import java.security.MessageDigest;
@@ -149,9 +150,11 @@ public class WifiP2PComponent {
             }
             else if (WifiP2pManager.WIFI_P2P_THIS_DEVICE_CHANGED_ACTION.equals(action))
             {
+                Log.e("WifiP2P", "Test");
                 if(ownMacAddress == null) {
                     WifiP2pDevice ownDevice = intent.getParcelableExtra(WifiP2pManager.EXTRA_WIFI_P2P_DEVICE);
                     ownMacAddress = ownDevice.deviceAddress;
+                    Log.e("WifiP2P", ownMacAddress);
                 }
             }
         }

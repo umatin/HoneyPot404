@@ -11,13 +11,20 @@ import de.honeypot.honeypot.wifip2p.WifiP2PListener;
 
 public class WifiDirect {
 
+    private static boolean alreadyInitialized = false;
+
     public static void init(Activity activity)
     {
+        if(alreadyInitialized)
+            return;
+
         WifiP2PComponent.init(activity, new WifiDirectListener());
         WifiP2PComponent.startUpdateThread();
+
+        alreadyInitialized = true;
     }
 
-    public String getOwnDeviceAddress()
+    public static String getOwnDeviceAddress()
     {
         return WifiP2PComponent.getOwnHashedDeviceAddress();
     }
@@ -28,7 +35,7 @@ public class WifiDirect {
     public static class WifiDirectListener implements WifiP2PListener
     {
         @Override
-        public void deviceDiscovered() {
+        public void deviceDiscovered(String address) {
             //TODO:
         }
 
