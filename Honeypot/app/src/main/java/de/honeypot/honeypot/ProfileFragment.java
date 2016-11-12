@@ -4,11 +4,8 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
-import android.preference.PreferenceFragment;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -60,13 +57,13 @@ public class ProfileFragment extends Fragment {
         TextView textViewName = (TextView) getView().findViewById(R.id.textViewName);
         TextView textViewScore = (TextView) getView().findViewById(R.id.textViewScore);
         TextView textViewMeetCount = (TextView) getView().findViewById(R.id.textViewMeetCount);
-/*
+
 
         String name = "", score = "", meetcount = "";
 
         textViewName.setText(getResources().getString(R.string.name) + ":\n" + name);
         textViewScore.setText(getResources().getString(R.string.score) + ":\n" + score);
-        textViewMeetCount.setText(getResources().getString(R.string.meet_count) + ":\n" + meetcount);*/
+        textViewMeetCount.setText(getResources().getString(R.string.meet_count) + ":\n" + meetcount);
     }
 
     @Override

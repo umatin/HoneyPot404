@@ -30,7 +30,8 @@
         android:layout_alignBottom="@+id/imageView"
         android:layout_toLeftOf="@+id/imageView"
         android:layout_toStartOf="@+id/imageView"
-        android:id="@+id/textViewScore" />
+        android:id="@+id/textViewScore"
+        android:textSize="16sp"/>
 
     <TextView
         android:text="@string/meet_count"
@@ -39,7 +40,8 @@
         android:layout_alignBottom="@+id/imageView"
         android:layout_toRightOf="@+id/imageView"
         android:layout_toEndOf="@+id/imageView"
-        android:id="@+id/textViewMeetCount" />
+        android:id="@+id/textViewMeetCount"
+        android:textSize="16sp"/>
 
     <TextView
         android:text="@string/name"
@@ -47,7 +49,8 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/imageView"
         android:layout_centerHorizontal="true"
-        android:id="@+id/textViewName" />
+        android:id="@+id/textViewName"
+        android:textSize="16sp" />
 
     <RelativeLayout
         android:layout_width="match_parent"

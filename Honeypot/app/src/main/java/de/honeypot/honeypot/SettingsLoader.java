@@ -4,9 +4,6 @@ import android.content.Intent;
 import android.preference.PreferenceActivity;
 import android.os.Bundle;
 
-import de.honeypot.honeypot.R;
-import de.honeypot.honeypot.Settings;
-
 public class SettingsLoader extends PreferenceActivity {
 
     @Override
