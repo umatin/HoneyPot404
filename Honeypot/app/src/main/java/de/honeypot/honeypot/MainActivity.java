@@ -34,7 +34,7 @@ public class MainActivity extends AppCompatActivity {
 
         MainActivity.sharedPref = getSharedPreferences("settings", Context.MODE_PRIVATE);
         String userName = sharedPref.getString("userName", "");
-        Toast.makeText(this,"token=" + sharedPref.getString("token", ""),Toast.LENGTH_LONG);
+
         Network.init(sharedPref.getString("token", ""), sharedPref.getString("id", ""));
 
         // no saved userName

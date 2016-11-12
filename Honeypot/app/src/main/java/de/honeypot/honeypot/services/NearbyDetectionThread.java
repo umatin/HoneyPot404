@@ -30,7 +30,7 @@ public class NearbyDetectionThread extends Thread {
             double latitude = 0.0;
             double longitude = 0.0;
 
-            if(location == null)
+            if(location != null)
             {
                 latitude = location.getLatitude();
                 longitude = location.getLongitude();

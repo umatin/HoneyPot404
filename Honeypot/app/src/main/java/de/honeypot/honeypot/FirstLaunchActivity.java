@@ -177,7 +177,7 @@ public class FirstLaunchActivity extends AppCompatActivity {
 
                     String token = jObject.getString("token");
                     String id = jObject.getString("id");
-
+                    System.err.println(token);
                     Log.i("token", token);
                     Log.i("id", id);
 
