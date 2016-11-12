@@ -12,8 +12,8 @@
     tools:context="de.honeypot.honeypot.ProfileFragment">
 
     <ImageView
-        android:layout_width="50dp"
-        android:layout_height="50dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         app:srcCompat="@color/colorAccent"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"

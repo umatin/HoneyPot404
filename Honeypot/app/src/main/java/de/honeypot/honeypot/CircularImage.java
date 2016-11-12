@@ -16,14 +16,17 @@ public class CircularImage {
     // make profile picture
     // res = resolution in px
     // dark = Dark Theme
-    public Bitmap circularProfilePicture(Bitmap image, Context c, int res, boolean dark) {
+    public static Bitmap circularProfilePicture(Bitmap image, int res, boolean light) {
         Bitmap bitmap;
 
         // color to overlay
-        int color = dark ? Color.WHITE : Color.DKGRAY;
-        Bitmap overlayColor = Bitmap.createBitmap(
-                new int[]{color}, 0, image.getWidth(), image.getWidth(), image.getHeight(), Bitmap.Config.ARGB_8888);
-        Bitmap overlay = bitmapWithCircularCutout(overlayColor, c);
+        int color = light ? Color.WHITE : Color.DKGRAY;
+
+        Bitmap overlayColor = Bitmap.createBitmap(res, res, Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(overlayColor);
+        canvas.drawColor(color);
+
+        Bitmap overlay = bitmapWithCircularCutout(overlayColor, res/2);
 
         // combine and return
         bitmap = combineBitmaps(image, overlay);
@@ -32,21 +35,20 @@ public class CircularImage {
 
     // BELOW IS ALL THAT JAZZ I DON'T UNDERSTAND
 
-    public Bitmap bitmapWithCircularCutout(Bitmap foreground, Context c) {
+    public static Bitmap bitmapWithCircularCutout(Bitmap foreground, int radius) {
         Bitmap bitmap = Bitmap.createBitmap(foreground.getWidth(), foreground.getHeight(), Bitmap.Config.ARGB_8888);
         Canvas canvas = new Canvas(bitmap);
         Paint paint = new Paint();
         canvas.drawBitmap(foreground, 0, 0, paint);
         paint.setAntiAlias(true);
         paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.CLEAR));
-        float radius = (float) (getScreenSize(c).x * .35);
-        float x = (float) ((getScreenSize(c).x * .5) + (radius * .5));
-        float y = (float) ((getScreenSize(c).y * .5) + (radius * .5));
+        float x = (float) foreground.getWidth()/2;
+        float y = (float) foreground.getHeight()/2;
         canvas.drawCircle(x, y, radius, paint);
         return bitmap;
     }
 
-    public Bitmap combineBitmaps(Bitmap background, Bitmap foreground) {
+    public static Bitmap combineBitmaps(Bitmap background, Bitmap foreground) {
         Bitmap combinedBitmap = Bitmap.createBitmap(background.getWidth(), background.getHeight(), background.getConfig());
         Canvas canvas = new Canvas(combinedBitmap);
         Paint paint = new Paint(Paint.FILTER_BITMAP_FLAG);
@@ -55,7 +57,7 @@ public class CircularImage {
         return combinedBitmap;
     }
 
-    public Point getScreenSize(Context c) {
+    public static Point getScreenSize(Context c) {
         WindowManager window = (WindowManager) c.getSystemService(Context.WINDOW_SERVICE);
         Display display = window.getDefaultDisplay();
         Point size = new Point();

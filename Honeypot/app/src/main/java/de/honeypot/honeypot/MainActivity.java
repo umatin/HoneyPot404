@@ -19,7 +19,7 @@ public class MainActivity extends AppCompatActivity {
 
         SharedPreferences sharedPref = getSharedPreferences("settings", Context.MODE_PRIVATE);
         String userName = sharedPref.getString("userName", "");
-        
+
         // no saved userName
         if (userName.equals("")) {
             Intent firstLaunchActivity = new Intent(this, FirstLaunchActivity.class);
