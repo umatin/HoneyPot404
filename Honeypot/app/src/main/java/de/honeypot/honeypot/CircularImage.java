@@ -13,6 +13,13 @@ import android.view.WindowManager;
 
 public class CircularImage {
 
+    public static int relativeImageRes(Context c){
+
+        int width = getScreenSize(c).x;
+
+        return width/4;
+    }
+
     // make profile picture
     // res = resolution in px
     // dark = Dark Theme

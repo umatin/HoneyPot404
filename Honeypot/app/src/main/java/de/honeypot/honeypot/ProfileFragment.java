@@ -23,7 +23,7 @@ public class ProfileFragment extends Fragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
 
         int color = Color.parseColor("#ff4081");
-        int res = Math.round(getResources().getInteger(R.integer.image_res));
+        int res = Math.round(CircularImage.relativeImageRes(getActivity()));
         Bitmap bitmap, colorBitmap = Bitmap.createBitmap(res, res, Bitmap.Config.ARGB_8888);
         Canvas canvas = new Canvas(colorBitmap);
         canvas.drawColor(color);
