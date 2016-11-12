@@ -3,6 +3,7 @@ package de.honeypot.honeypot;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.os.Environment;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -13,6 +14,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import java.io.File;
 
 import de.honeypot.honeypot.handlers.CircularImage;
 
@@ -29,7 +33,8 @@ public class ProfileFragment extends Fragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
 
-        Bitmap bitmap = readFileToBitmap("iconUser.png");
+        Bitmap bitmap = readFileToBitmap(getContext().getExternalFilesDir(null) + File.separator +  "Profile.jpeg");
+
         int res = CircularImage.relativeImageRes(getActivity());
         if (bitmap != null) {
             bitmap = CircularImage.circularProfilePicture(bitmap, res, true);

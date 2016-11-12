@@ -21,7 +21,7 @@ public class StorageHandler {
 
         BitmapFactory.Options options = new BitmapFactory.Options();
         options.inPreferredConfig = Bitmap.Config.ARGB_8888;
-        return BitmapFactory.decodeFile(storageDirectory("bitmap") + "/" + fileName, options);
+        return BitmapFactory.decodeFile(fileName, options);
 
     }
 
