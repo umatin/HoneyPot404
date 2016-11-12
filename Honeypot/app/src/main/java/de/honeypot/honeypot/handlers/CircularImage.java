@@ -13,11 +13,20 @@ import android.view.WindowManager;
 
 public class CircularImage {
 
-    public static int relativeImageRes(Context c){
+    // profile
+    public static int relativeImageRes(Context c) {
 
         int width = getScreenSize(c).x;
 
-        return Math.round(width/4);
+        return Math.round(width / 4);
+    }
+
+    // friends
+    public static int relativeImageRes2(Context c) {
+
+        int width = getScreenSize(c).x;
+
+        return Math.round(width / 6);
     }
 
     // make profile picture
@@ -33,7 +42,7 @@ public class CircularImage {
         Canvas canvas = new Canvas(overlayColor);
         canvas.drawColor(color);
 
-        Bitmap overlay = bitmapWithCircularCutout(overlayColor, res/2);
+        Bitmap overlay = bitmapWithCircularCutout(overlayColor, res / 2);
 
         // combine and return
         bitmap = combineBitmaps(Bitmap.createScaledBitmap(image, res, res, false), overlay);
@@ -49,8 +58,8 @@ public class CircularImage {
         canvas.drawBitmap(foreground, 0, 0, paint);
         paint.setAntiAlias(true);
         paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.CLEAR));
-        float x = (float) foreground.getWidth()/2;
-        float y = (float) foreground.getHeight()/2;
+        float x = (float) foreground.getWidth() / 2;
+        float y = (float) foreground.getHeight() / 2;
         canvas.drawCircle(x, y, radius, paint);
         return bitmap;
     }

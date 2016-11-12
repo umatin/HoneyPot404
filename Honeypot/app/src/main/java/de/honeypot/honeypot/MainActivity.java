@@ -14,6 +14,10 @@ import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuInflater;
+
 import de.honeypot.honeypot.handlers.*;
 
 public class MainActivity extends AppCompatActivity {
@@ -57,6 +61,9 @@ public class MainActivity extends AppCompatActivity {
         tabLayout.addTab(tabLayout.newTab().setText(getString(R.string.fragment_friends)));
         tabLayout.addTab(tabLayout.newTab().setText(getString(R.string.fragment_stats)));
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
+
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
 
     }
 

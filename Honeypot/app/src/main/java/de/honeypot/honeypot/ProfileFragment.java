@@ -6,6 +6,9 @@ import android.graphics.Color;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -19,6 +22,7 @@ public class ProfileFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {
+        setHasOptionsMenu(true);
         return inflater.inflate(R.layout.activity_profile_fragment, parent, false);
     }
 
@@ -45,11 +49,28 @@ public class ProfileFragment extends Fragment {
             e.printStackTrace();
         }
 
-
         // initialize Views
         TextView textViewName = (TextView) getView().findViewById(R.id.textViewName);
         TextView textViewScore = (TextView) getView().findViewById(R.id.textViewScore);
         TextView textViewMeetCount = (TextView) getView().findViewById(R.id.textViewMeetCount);
 
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.profile_menu, menu);
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+
+            case R.id.edit_profile:
+
+                return true;
+        }
+
+        return false;
     }
 }
