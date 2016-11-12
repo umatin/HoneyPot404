@@ -7,7 +7,8 @@
 
 #imports:
 import urllib.request
-from time import *
+from time import sleep
+import time
 from groveLib.grovepi import *
 from groveLib.grove_rgb_lcd.grove_rgb_lcd import *
 import json
@@ -61,23 +62,24 @@ class handleEverything():
             
             
 
-            if counter%5==0:
+            if counter%7==0: #alle sieben 
                 ssid, name, color, times = self.getSSID_Name_Color_Time()
                 print(ssid, name, color, times)
                 #b=True
                 
 
-            if counter >= 60:
+            if counter >= 60:#alle drei minuten einnehmen
+                ssid=self.newSSID()
                 #self.changeSSID(ssis)
                 counter=0
 
-            if times+60-time()<=0: #and b:
+            if times+180-int(time.time())<=0: #and b:
                 content = [name, "Conquerable!!!"]
                 #b=False
             else:#if not time+60-time()<=0:
-                
+                newSSID();
 
-                content = [name, "Next: " + (times+60-time())]
+                content = [name, "Next: " + str(times+180-int(time.time()))]
                 #b=True
 
             self.displayAusgabe(content, color)
@@ -94,7 +96,7 @@ class handleEverything():
     #TODO, json decoder
 
     def getSSID_Name_Color_Time(self):#capture --> timestamp
-        response= self.makeHTTPRequest("/hotspot/update?token="+self.token)
+        response= self.makeHTTPRequest("/hotspot/fetch?token="+self.token)
         print(response)
         j = json.loads(response)
 
@@ -108,6 +110,13 @@ class handleEverything():
         print(str(response))
         j = json.loads(str(response))
         return j["token"]
+
+    def newSSID(self):
+        response=self.makeHTTPRequest("/hotspot/update?toker="+self.token)
+        print("New SSID for wifi")
+        print(str(response))
+        j = json.loads(str(response))
+        return j["ssid"]
         
 
 
@@ -120,6 +129,7 @@ class handleEverything():
     def displayAusgabe(self, content, rgb):
         print(rgb, int('0x'+rgb[0:2], 16), int('0x'+rgb[2:4], 16), int('0x'+rgb[4:6], 16))
         setRGB(int('0x'+rgb[0:2], 16), int('0x'+rgb[2:4], 16), int('0x'+rgb[4:6], 16))
+
         #setRGB(int(rgb[0], 16), int(rgb[1], 16), int(rgb[2], 16))
         #convert content for lcd
 
