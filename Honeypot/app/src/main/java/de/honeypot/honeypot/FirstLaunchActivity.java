@@ -159,7 +159,6 @@ public class FirstLaunchActivity extends AppCompatActivity {
                 HttpGet request = new HttpGet(link + "/register?device=" + android_id + "&name=" + name);
                 // replace with your url
 
-
                 HttpResponse response;
                 try {
                     response = client.execute(request);
@@ -243,9 +242,6 @@ public class FirstLaunchActivity extends AppCompatActivity {
 
     @Override
     protected void onPause() {
-        super.onPause();
-        finish();
+        System.exit(0);
     }
-
-
 }
