@@ -6,7 +6,7 @@ package de.honeypot.honeypot.wifip2p;
 
 public interface WifiP2PListener {
 
-    public void deviceDiscovered();
+    public void deviceDiscovered(String address);
 
     public void onWifiDiasbled();
 

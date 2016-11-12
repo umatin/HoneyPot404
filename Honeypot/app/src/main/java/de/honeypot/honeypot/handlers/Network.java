@@ -21,15 +21,16 @@ public class Network {// bitte auf alle Methoden mit einem eigenen Task/Thread z
 
     public static String link = "http://honeypot4431.cloudapp.net";
 
-    private String token;
-    private String id;
+    private static String token;
+    private static String id;
 
 
-    public Network(String Token, String ID){
+
+    public static void init(String Token, String ID)
+    {
         token=Token;
         id=ID;
     }
-
 
     static public boolean isInternt(){      //hat das handy internet
 
@@ -93,7 +94,7 @@ public class Network {// bitte auf alle Methoden mit einem eigenen Task/Thread z
 
     }
 
-    public User profile(String id_else){        //Profile eines anderen aufrufen --> Rückgabewerte in den Attributen
+    public static User profile(String id_else){        //Profile eines anderen aufrufen --> Rückgabewerte in den Attributen
         try{
             HttpClient client = new DefaultHttpClient();
             HttpGet request = new HttpGet(link+"/profile?id="+id+"&token="+token);
@@ -132,11 +133,11 @@ public class Network {// bitte auf alle Methoden mit einem eigenen Task/Thread z
         }
     }
 
-    public User ownProfile(){ //eigenes Profil zum sync --> Rückgabewerte in den Attributen
+    public static User ownProfile(){ //eigenes Profil zum sync --> Rückgabewerte in den Attributen
         return profile(id);
     }
 
-    public String[] nearby(double lat, double lon){     //gibt die geräte in der nähe aus
+    public static String[] nearby(double lat, double lon){     //gibt die geräte in der nähe aus
 
         try{
             HttpClient client = new DefaultHttpClient();
@@ -180,7 +181,7 @@ public class Network {// bitte auf alle Methoden mit einem eigenen Task/Thread z
         }
 
     }
-    public void capture(){
+    public static void capture(){
         //TODO
     }
 
