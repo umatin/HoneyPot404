@@ -1,4 +1,4 @@
-package de.honeypot.honeypot;
+package de.honeypot.honeypot.handlers;
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -17,7 +17,7 @@ public class CircularImage {
 
         int width = getScreenSize(c).x;
 
-        return width/4;
+        return Math.round(width/4);
     }
 
     // make profile picture
@@ -36,7 +36,7 @@ public class CircularImage {
         Bitmap overlay = bitmapWithCircularCutout(overlayColor, res/2);
 
         // combine and return
-        bitmap = combineBitmaps(image, overlay);
+        bitmap = combineBitmaps(Bitmap.createScaledBitmap(image, res, res, false), overlay);
         return bitmap;
     }
 

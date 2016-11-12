@@ -30,7 +30,7 @@
         android:layout_alignBottom="@+id/imageView"
         android:layout_toLeftOf="@+id/imageView"
         android:layout_toStartOf="@+id/imageView"
-        android:id="@+id/textViewPoints" />
+        android:id="@+id/textViewScore" />
 
     <TextView
         android:text="MeetCount"
