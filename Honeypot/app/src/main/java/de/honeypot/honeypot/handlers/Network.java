@@ -55,47 +55,47 @@ public class Network {// bitte auf alle Methoden mit einem eigenen Task/Thread z
         }
     }
 
-    static public void register(String name, String android_id){    //registriert das handy (wird eigentlich nicht gebraucht)
-
-        try{
-
-            HttpClient client = new DefaultHttpClient();
-
-
-            HttpGet request = new HttpGet(link + "/register?device=" + android_id + "&name=" + name);
-
-
-
-            HttpResponse response = client.execute(request);
-
-
-
-            ByteArrayOutputStream out = new ByteArrayOutputStream();
-            response.getEntity().writeTo(out);
-            String responseString = out.toString();
-            out.close();
-
-            Log.i("Response of GET request", responseString);
-            JSONObject jObject = new JSONObject(responseString);
-
-            String token = jObject.getString("token");
-            String id = jObject.getString("id");
-
-            Log.i("token", token);
-            Log.i("id", id);
-
-
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-
-    }
+//    static public void register(String name, String android_id){    //registriert das handy (wird eigentlich nicht gebraucht)
+//
+//        try{
+//
+//            HttpClient client = new DefaultHttpClient();
+//
+//
+//            HttpGet request = new HttpGet(link + "/register?device=" + android_id + "&name=" + name);
+//
+//
+//
+//            HttpResponse response = client.execute(request);
+//
+//
+//
+//            ByteArrayOutputStream out = new ByteArrayOutputStream();
+//            response.getEntity().writeTo(out);
+//            String responseString = out.toString();
+//            out.close();
+//
+//            Log.i("Response of GET request", responseString);
+//            JSONObject jObject = new JSONObject(responseString);
+//
+//            String token = jObject.getString("token");
+//            String id = jObject.getString("id");
+//
+//            Log.i("token", token);
+//            Log.i("id", id);
+//
+//
+//
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        } catch (JSONException e) {
+//            e.printStackTrace();
+//        }
+//
+//    }
 
     public static User profile(String id_else){        //Profile eines anderen aufrufen --> Rückgabewerte in den Attributen
-        try{
+        try {
             HttpClient client = new DefaultHttpClient();
             HttpGet request = new HttpGet(link+"/profile?id="+id+"&token="+token);
             HttpResponse response = client.execute(request);
@@ -104,27 +104,34 @@ public class Network {// bitte auf alle Methoden mit einem eigenen Task/Thread z
             String responseString = out.toString();
             out.close();
 
+
+            //DEBUG
+            //String responseString = "{\"id\":4,\"name\":\"Miau\",\"points\":0,\"friends\":[2, 3, 4],\"picture\":\"\",\"color\":\"FF4081\"}";
+
             JSONObject jObject = new JSONObject(responseString);
 
-            String name=jObject.getString("name");
+            String name = jObject.getString("name");
+
             String ID = jObject.getString("id");
             int points = jObject.getInt("points");
+
+
             JSONArray jFriendsArray = jObject.getJSONArray("friends");//.getJSONObject(i);
             String picture = jObject.getString("picture");
 
 
             String[] friends = new String[jFriendsArray.length()];
+
             for(int i =0; i<jFriendsArray.length(); i++){
-                friends[i]=jFriendsArray.getJSONObject(i).getString("id");
+                friends[i]=jFriendsArray.getString(i);
+                Log.i("test", friends[i]);
             }
 
-
-
+            Log.i("user", ID + "," + name + ","  + picture+ ","+ points);
             return new User(name, ID, points, friends, picture);
 
 
-
-        } catch (IOException e) {
+        } catch (IOException e) { //falls kein
             e.printStackTrace();
             return new User();
         }catch (JSONException e) {
@@ -149,16 +156,11 @@ public class Network {// bitte auf alle Methoden mit einem eigenen Task/Thread z
             out.close();
 
             JSONObject jObject = new JSONObject(responseString);
-//
-//            String name=jObject.getString("name");
-//            String ID = jObject.getString("id");
-//            int points = jObject.getInt("points");
-//            JSONArray jFriendsArray = jObject.getJSONArray();//.getJSONObject(i);
-//            String picture = jObject.getString("picture");
 
-            JSONArray jsonArray = jObject.optJSONArray("nearby");
 
-            //JSONArray jsonArray = new JSONArray(responseString);
+            JSONArray jsonArray = jObject.getJSONArray("nearby");//jObject.optJSONArray("nearby");
+
+
 
 
             String[] ids = new String[jsonArray.length()];
@@ -172,7 +174,7 @@ public class Network {// bitte auf alle Methoden mit einem eigenen Task/Thread z
 
 
 
-        } catch (IOException e) {
+        } catch (IOException e) { // falls kein Internet --> leeres array
             e.printStackTrace();
             return new String[0];
         }catch (JSONException e) {
