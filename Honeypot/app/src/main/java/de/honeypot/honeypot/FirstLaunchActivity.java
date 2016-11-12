@@ -136,6 +136,10 @@ public class FirstLaunchActivity extends AppCompatActivity {
     private void keyPress() {
         final String name = nameField.getText().toString();
 
+        if (name.equals("")){
+            return;
+        }
+
         final String android_id = Settings.Secure.getString(getContentResolver(),
                 Settings.Secure.ANDROID_ID);
 

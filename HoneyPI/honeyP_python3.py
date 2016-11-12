@@ -7,7 +7,7 @@
 
 #imports:
 import urllib.request
-from time import sleep, time
+from time import *
 from groveLib.grovepi import *
 from groveLib.grove_rgb_lcd.grove_rgb_lcd import *
 import json
@@ -50,7 +50,7 @@ class handleEverything():
         ssid=""
         name=""
         color=""
-        time=""
+        times=""
         #b = False
         #self.starthotspotservices()
         while True:
@@ -62,8 +62,8 @@ class handleEverything():
             
 
             if counter%5==0:
-                ssid, name, color, time = self.getSSID_Name_Color_Time()
-                print(ssid, name, color, time)
+                ssid, name, color, times = self.getSSID_Name_Color_Time()
+                print(ssid, name, color, times)
                 #b=True
                 
 
@@ -71,13 +71,13 @@ class handleEverything():
                 #self.changeSSID(ssis)
                 counter=0
 
-            if time+60-time()<=0: #and b:
+            if times+60-time()<=0: #and b:
                 content = [name, "Conquerable!!!"]
                 #b=False
             else:#if not time+60-time()<=0:
                 
 
-                content = [name, "Next: " + (time+60-time())]
+                content = [name, "Next: " + (times+60-time())]
                 #b=True
 
             self.displayAusgabe(content, color)
