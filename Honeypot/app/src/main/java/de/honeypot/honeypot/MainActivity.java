@@ -64,8 +64,8 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-
-        startService(new Intent(this, MainBackgroundService.class));
+        Intent service = new Intent(getApplicationContext(), MainBackgroundService.class);
+        this.startService(service);
     }
 
     // PagerAdapter

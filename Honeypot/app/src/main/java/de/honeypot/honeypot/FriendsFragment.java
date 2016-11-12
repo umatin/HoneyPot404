@@ -25,6 +25,7 @@ public class FriendsFragment extends Fragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         ListView listView = (ListView) view.findViewById(R.id.listView);
 
+
         //TODO add listView items
     }
 
