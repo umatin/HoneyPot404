@@ -1,6 +1,7 @@
 package de.honeypot.honeypot.handlers;
 
 
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Environment;
@@ -12,9 +13,9 @@ public class StorageHandler {
 
 
     // data filePath
-    public static String storageDirectory(String rep) {
+    public static String storageDirectory(Context c, String rep) {
         //return Environment.getExternalStorageDirectory().getPath() + "/Android/data/de.honeypot.honeypot/" + rep;
-        return Environment.getDataDirectory().getPath() + "/de.honeypot.honeypot/" + rep;
+        return c.getExternalFilesDir(null) + File.separator + rep;
     }
 
     public static Bitmap readFileToBitmap(String fileName) {
@@ -23,18 +24,6 @@ public class StorageHandler {
         options.inPreferredConfig = Bitmap.Config.ARGB_8888;
         return BitmapFactory.decodeFile(fileName, options);
 
-    }
-
-    // set the .nomedia file
-    public static void setNoMedia() {
-
-        File file = new File(storageDirectory("bitmap") + "/.nomedia");
-        try {
-            new File(storageDirectory("bitmap")).mkdirs();
-            file.createNewFile();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
     }
 
 }

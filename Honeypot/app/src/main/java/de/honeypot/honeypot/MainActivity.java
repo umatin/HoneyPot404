@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
-import android.net.*;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
@@ -17,13 +16,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.widget.Toast;
-
-import de.honeypot.honeypot.handlers.*;
 import de.honeypot.honeypot.services.GPS;
 import de.honeypot.honeypot.services.WifiDirect;
-import android.util.Log;
-
-import de.honeypot.honeypot.handlers.*;
 import de.honeypot.honeypot.handlers.Network;
 
 public class MainActivity extends AppCompatActivity {
@@ -61,8 +55,6 @@ public class MainActivity extends AppCompatActivity {
         if(ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)== PackageManager.PERMISSION_DENIED){
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 2812);
         }
-
-        StorageHandler.setNoMedia();
 
         // setContentView
         setContentView(R.layout.activity_main);
