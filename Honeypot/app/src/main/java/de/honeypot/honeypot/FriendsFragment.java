@@ -1,11 +1,11 @@
 package de.honeypot.honeypot;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.support.v4.app.Fragment;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -18,9 +18,8 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import java.util.List;
-
 import de.honeypot.honeypot.handlers.CircularImage;
+import de.honeypot.honeypot.handlers.ProfileLoader;
 
 import static de.honeypot.honeypot.handlers.StorageHandler.readFileToBitmap;
 
@@ -35,7 +34,7 @@ public class FriendsFragment extends Fragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         ListView listView = (ListView) view.findViewById(R.id.listView);
-        listView.setAdapter(new yourAdapter(getActivity(), new String[]{"data1",
+        listView.setAdapter(new listViewAdapter(getActivity(), new String[]{"data1",
                 "data2"}));
         //TODO add listView items
     }
@@ -52,7 +51,7 @@ public class FriendsFragment extends Fragment {
         switch (item.getItemId()) {
 
             case R.id.refresh:
-
+                startActivity(new Intent(getActivity(), ProfileLoader.class));
                 return true;
         }
 
@@ -60,14 +59,14 @@ public class FriendsFragment extends Fragment {
     }
 }
 
-class yourAdapter extends BaseAdapter {
+class listViewAdapter extends BaseAdapter {
 
     Context context;
     String[] data;
 
     private static LayoutInflater inflater = null;
 
-    public yourAdapter(Context context, String[] data) {
+    public listViewAdapter(Context context, String[] data) {
         // TODO Auto-generated constructor stub
         this.context = context;
         this.data = data;
