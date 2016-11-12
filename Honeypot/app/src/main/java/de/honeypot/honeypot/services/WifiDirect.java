@@ -11,17 +11,13 @@ import de.honeypot.honeypot.services.wifip2p.WifiP2PListener;
 
 public class WifiDirect {
 
-    private static boolean alreadyInitialized = false;
+    private static volatile boolean alreadyInitialized = false;
 
     public static void init(Activity activity)
     {
-        if(alreadyInitialized)
-            return;
-
         WifiP2PComponent.init(activity, new WifiDirectListener());
         WifiP2PComponent.startUpdateThread();
-
-        alreadyInitialized = true;
+        WifiDirect.alreadyInitialized = true;
     }
 
     public static String getOwnDeviceAddress()

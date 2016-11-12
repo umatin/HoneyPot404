@@ -19,6 +19,11 @@ import de.honeypot.honeypot.services.NearbyDetectionThread;
 
 public class WifiP2PHandler {
 
+    public static void openUser(int detectedUserID)
+    {
+        System.out.println("opening user " + detectedUserID);
+    }
+
     public static void informUser(NearbyObject detectedUser)
     {
         NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(MainActivity.instance);
@@ -30,6 +35,7 @@ public class WifiP2PHandler {
 
         //Add intent
         Intent resultIntent = new Intent(MainActivity.instance, MainActivity.class);
+        resultIntent.putExtra("detectedUserID", detectedUser.getId());
         TaskStackBuilder stackBuilder = TaskStackBuilder.create(MainActivity.instance);
         stackBuilder.addParentStack(MainActivity.class);
 

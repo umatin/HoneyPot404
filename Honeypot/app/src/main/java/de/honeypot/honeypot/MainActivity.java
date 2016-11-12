@@ -83,7 +83,13 @@ public class MainActivity extends AppCompatActivity {
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        WifiP2PHandler.informUser(new NearbyObject(0, 0, "asdasd"));
+
+        if(getIntent().hasExtra("detectedUserID"))
+        {
+            int detectedUserID = getIntent().getIntExtra("detectedUserID", -1);
+            WifiP2PHandler.openUser(detectedUserID);
+        }
+        WifiP2PHandler.informUser(new NearbyObject(10, 10, "sd"));
     }
 
     // PagerAdapter
