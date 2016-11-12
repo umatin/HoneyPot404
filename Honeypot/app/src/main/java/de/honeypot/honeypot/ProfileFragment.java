@@ -79,7 +79,7 @@ public class ProfileFragment extends Fragment {
         switch (item.getItemId()) {
 
             case R.id.edit_profile:
-                startActivity(new Intent());
+                startActivity(new Intent(getActivity(), Settings.class));
                 return true;
         }
 
