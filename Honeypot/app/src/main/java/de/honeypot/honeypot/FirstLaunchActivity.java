@@ -68,6 +68,8 @@ public class FirstLaunchActivity extends AppCompatActivity {
 
                     final String name = NameField.getText().toString();
 
+
+                    //TODO mac adresse + hash sh1
                     final String android_id = Settings.Secure.getString(getContentResolver(),
                             Settings.Secure.ANDROID_ID);
 
