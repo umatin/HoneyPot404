@@ -9,6 +9,9 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ListView;
+
+import java.util.List;
 
 public class FriendsFragment extends Fragment {
 
@@ -20,7 +23,9 @@ public class FriendsFragment extends Fragment {
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
+        ListView listView = (ListView) view.findViewById(R.id.listView);
 
+        //TODO add listView items
     }
 
     @Override

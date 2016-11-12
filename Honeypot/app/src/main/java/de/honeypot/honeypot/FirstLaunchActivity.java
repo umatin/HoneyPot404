@@ -56,7 +56,6 @@ public class FirstLaunchActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_first_launch);
 
-        Toast.makeText(getApplication(), "test1", Toast.LENGTH_SHORT).show();
         sharedPref = getSharedPreferences("settings", Context.MODE_PRIVATE);
         nameField = (EditText) findViewById(R.id.editText);
         button = (Button) findViewById(R.id.button);
