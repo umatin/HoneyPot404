@@ -1,5 +1,6 @@
 package de.honeypot.honeypot;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
@@ -32,6 +33,8 @@ public class ProfileFragment extends Fragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
 
+        MainActivity.sharedPref = getActivity().getSharedPreferences("settings", Context.MODE_PRIVATE);
+
         Bitmap bitmap = readFileToBitmap(getContext().getExternalFilesDir(null) + File.separator +  "Profile.jpeg");
 
         int res = CircularImage.relativeImageRes(getActivity());
@@ -60,6 +63,7 @@ public class ProfileFragment extends Fragment {
 
 
         String name = "", score = "", meetcount = "";
+        name = MainActivity.sharedPref.getString("userName", "");
 
         textViewName.setText(getResources().getString(R.string.name) + ":\n" + name);
         textViewScore.setText(getResources().getString(R.string.score) + ":\n" + score);

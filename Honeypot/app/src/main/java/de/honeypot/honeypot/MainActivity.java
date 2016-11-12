@@ -15,6 +15,7 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 
 import de.honeypot.honeypot.data.NearbyObject;
 import de.honeypot.honeypot.handlers.WifiP2PHandler;
@@ -31,6 +32,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        Log.i("General", "Launched MainActivity");
+
         MainActivity.instance = this;
 
         //Init for getting device mac address as soon as possible
@@ -45,7 +48,12 @@ public class MainActivity extends AppCompatActivity {
         if (userName.equals("")) {
             Intent firstLaunchActivity = new Intent(this, FirstLaunchActivity.class);
             startActivity(firstLaunchActivity);
+            finish();
+            return;
         }
+
+        // setContentView
+        setContentView(R.layout.activity_main);
 
         GPS.init(this);
 
@@ -55,9 +63,6 @@ public class MainActivity extends AppCompatActivity {
         if(ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)== PackageManager.PERMISSION_DENIED){
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 2812);
         }
-
-        // setContentView
-        setContentView(R.layout.activity_main);
 
         // setup PagerAdapter
         PagerAdapter pagerAdapter = new PagerAdapter(getSupportFragmentManager());

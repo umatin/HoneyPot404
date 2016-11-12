@@ -223,7 +223,7 @@ public class FirstLaunchActivity extends AppCompatActivity {
                     e.printStackTrace();
                     Log.i("Server Fehler", "");
                 }
-                //openIntent();
+                openIntent();
 
             }
         };
