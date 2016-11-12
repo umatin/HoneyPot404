@@ -1,4 +1,4 @@
-package de.honeypot.honeypot.location.testing;
+package de.honeypot.honeypot.services.location.testing;
 
 import android.location.Location;
 

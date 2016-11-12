@@ -1,4 +1,4 @@
-package de.honeypot.honeypot.wifip2p;
+package de.honeypot.honeypot.services.wifip2p;
 
 /**
  * Created by Geosearchef on 12.11.2016.
@@ -6,7 +6,7 @@ package de.honeypot.honeypot.wifip2p;
 
 public interface WifiP2PListener {
 
-    public void deviceDiscovered();
+    public void deviceDiscovered(String address);
 
     public void onWifiDiasbled();
 

@@ -3,7 +3,6 @@ package de.honeypot.honeypot;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.provider.Settings;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -13,7 +12,6 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
-import android.view.animation.AnimationSet;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.Button;
 import android.widget.EditText;
@@ -34,6 +32,8 @@ import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+
+import de.honeypot.honeypot.services.WifiDirect;
 
 public class FirstLaunchActivity extends AppCompatActivity {
 
@@ -129,15 +129,17 @@ public class FirstLaunchActivity extends AppCompatActivity {
                 keyPress();
             }
         });
-
     }
 
     // handle key press
     private void keyPress() {
-        final String name = nameField.getText().toString();
+        final String name = nameField.getText().toString().trim();
 
-        final String android_id = Settings.Secure.getString(getContentResolver(),
-                Settings.Secure.ANDROID_ID);
+        if (name.equals("")){
+            return;
+        }
+
+        final String android_id = WifiDirect.getOwnDeviceAddress();
 
         editor = sharedPref.edit();
         editor.putString("userName", name);

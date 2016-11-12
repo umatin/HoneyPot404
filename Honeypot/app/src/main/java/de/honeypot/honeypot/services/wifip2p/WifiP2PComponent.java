@@ -1,4 +1,4 @@
-package de.honeypot.honeypot.wifip2p;
+package de.honeypot.honeypot.services.wifip2p;
 
 import android.app.Activity;
 import android.content.BroadcastReceiver;
@@ -9,15 +9,13 @@ import android.net.wifi.WifiManager;
 import android.net.wifi.p2p.WifiP2pDevice;
 import android.net.wifi.p2p.WifiP2pDeviceList;
 import android.net.wifi.p2p.WifiP2pManager;
-import android.support.annotation.Nullable;
+import android.util.Log;
 import android.widget.Toast;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.List;
-
-import de.honeypot.honeypot.wifip2p.WifiP2PListener;
 
 /**
  * Created by Geosearchef on 12.11.2016.
@@ -36,7 +34,7 @@ public class WifiP2PComponent {
     private static WifiDirectBroadCastReceiver receiver;
 
     private static boolean isWifiP2PEnabled = false;
-    private static String ownMacAddress = null;
+    private static volatile String ownMacAddress = null;
 
     private static WifiP2PListener wifiP2PListener;
 
@@ -105,7 +103,7 @@ public class WifiP2PComponent {
             for(int i = 0;i < peers.size();i++)
             {
                 String hash = sha1(((WifiP2pDevice)peers.get(i)).deviceAddress);
-                wifiP2PListener.deviceDiscovered();
+                wifiP2PListener.deviceDiscovered(hash);
             }
 
         }
@@ -117,10 +115,6 @@ public class WifiP2PComponent {
         @Override
         public void onReceive(Context context, Intent intent) {
 
-            if(ownMacAddress == null) {
-                WifiP2pDevice ownDevice = intent.getParcelableExtra(WifiP2pManager.EXTRA_WIFI_P2P_DEVICE);
-                ownMacAddress = ownDevice.deviceAddress;
-            }
 
             String action = intent.getAction();
             if (WifiP2pManager.WIFI_P2P_STATE_CHANGED_ACTION.equals(action))
@@ -153,7 +147,12 @@ public class WifiP2PComponent {
             }
             else if (WifiP2pManager.WIFI_P2P_THIS_DEVICE_CHANGED_ACTION.equals(action))
             {
-
+                Log.e("WifiP2P", "Test");
+                if(ownMacAddress == null) {
+                    WifiP2pDevice ownDevice = intent.getParcelableExtra(WifiP2pManager.EXTRA_WIFI_P2P_DEVICE);
+                    ownMacAddress = ownDevice.deviceAddress;
+                    Log.e("WifiP2P", ownMacAddress);
+                }
             }
         }
     }
@@ -174,6 +173,12 @@ public class WifiP2PComponent {
 
     public static String getOwnHashedDeviceAddress()
     {
+        while(ownMacAddress == null)
+        {
+            
+            try{Thread.sleep(100);}catch(InterruptedException e){}
+        }
+
         return sha1(ownMacAddress);
     }
 

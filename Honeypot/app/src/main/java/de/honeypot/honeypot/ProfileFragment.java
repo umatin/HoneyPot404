@@ -1,5 +1,6 @@
 package de.honeypot.honeypot;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -72,7 +73,7 @@ public class ProfileFragment extends Fragment {
         switch (item.getItemId()) {
 
             case R.id.edit_profile:
-
+                startActivity(new Intent());
                 return true;
         }
 

@@ -1,4 +1,4 @@
-package de.honeypot.honeypot.location.testing;
+package de.honeypot.honeypot.services.location.testing;
 
 import android.location.Location;
 import android.support.v7.app.AppCompatActivity;
@@ -6,7 +6,7 @@ import android.os.Bundle;
 import android.widget.TextView;
 
 import de.honeypot.honeypot.R;
-import de.honeypot.honeypot.location.GPSProvider;
+import de.honeypot.honeypot.services.location.GPSProvider;
 
 public class GPSProviderTestActivity extends AppCompatActivity {
 

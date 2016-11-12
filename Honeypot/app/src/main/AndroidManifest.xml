@@ -2,9 +2,20 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="de.honeypot.honeypot">
 
+
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.INTERNET" />
+
+    <uses-permission
+        android:name="android.permission.ACCESS_COARSE_LOCATION"
+        android:required="true" />
+    <uses-permission
+        android:name="android.permission.ACCESS_FINE_LOCATION"
+        android:required="true" />
+    <uses-permission
+        android:name="android.permission.INTERNET"
+        android:required="true" />
     <uses-permission
         android:name="android.permission.ACCESS_WIFI_STATE"
         android:required="true" />
@@ -29,7 +40,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".location.testing.GPSProviderTestActivity"
+            android:name=".services.location.testing.GPSProviderTestActivity"
             android:label="Honeypot GPSTest">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -40,7 +51,12 @@
         <activity
             android:name=".FirstLaunchActivity"
             android:screenOrientation="portrait" />
+
         <activity android:name=".SetPictureActivity"></activity>
+
+        <activity
+            android:name=".EditProfile"
+            android:label="@string/title_activity_edit_profile"></activity>
     </application>
 
 </manifest>
