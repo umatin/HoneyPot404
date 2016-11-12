@@ -33,7 +33,7 @@ public class Network {// bitte auf alle Methoden mit einem eigenen Task/Thread z
     }
 
 
-    static public boolean isInternt(){
+    static public boolean isInternt(){      //hat das handy internet
 
         try{
             HttpClient client = new DefaultHttpClient();
@@ -56,7 +56,7 @@ public class Network {// bitte auf alle Methoden mit einem eigenen Task/Thread z
         }
     }
 
-    static public void register(String name, String android_id){
+    static public void register(String name, String android_id){    //registriert das handy (wird eigentlich nicht gebraucht)
 
         try{
 
@@ -138,7 +138,7 @@ public class Network {// bitte auf alle Methoden mit einem eigenen Task/Thread z
         return profile(id);
     }
 
-    public String[] nearby(double lat, double lon){
+    public String[] nearby(double lat, double lon){     //gibt die geräte in der nähe aus
 
         try{
             HttpClient client = new DefaultHttpClient();
