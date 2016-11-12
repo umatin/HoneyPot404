@@ -3,6 +3,7 @@ package de.honeypot.honeypot.location;
 import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationListener;
@@ -43,10 +44,24 @@ public class GPSProvider implements LocationListener {
         init();
     }
 
-    private void init() {
+    private void init()
+    {
+        String provider = Settings.Secure.getString(activity.getContentResolver(), Settings.Secure.LOCATION_PROVIDERS_ALLOWED);
 
-        //TODO: turn gps on if necessary
-        if(Settings.Secure.getString(activity.getContentResolver(), Settings.Secure.ALLOW_MOCK_LOCATION).equals("0"))
+        if(!provider.contains("gps"))
+        {
+            this.activity.runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    Toast.makeText(activity, "Please enable GPS to use this app!", Toast.LENGTH_LONG).show();
+                }
+            });
+
+            Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+            activity.startActivityForResult(intent, 1);
+        }
+
+        if(Settings.Secure.getString(activity.getContentResolver(), Settings.Secure.ALLOW_MOCK_LOCATION).equals("1") || ALLOW_MOCK_LOCATION)
         {
             activity.runOnUiThread(new Runnable() {
                 @Override
@@ -54,6 +69,8 @@ public class GPSProvider implements LocationListener {
                     Toast.makeText(activity, "Please turn of GPS mocking to use this app!", Toast.LENGTH_LONG).show();
                 }
             });
+
+            try{Thread.sleep(200);}catch(InterruptedException e){}
 
             System.exit(-1);//TODO: overkill
         }

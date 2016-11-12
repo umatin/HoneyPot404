@@ -34,9 +34,9 @@ public class GPSProviderTestActivity extends AppCompatActivity {
                             @Override
                             public void run() {
                                 if(gpsProvider.getGPSLocation() != null)
-                                    textView1.setText("GPSLoc: " + gpsProvider.getGPSLocation().getLatitude() + "   " + gpsProvider.getGPSLocation().getLongitude() + "Acc: " + gpsProvider.getGPSLocation().getAccuracy());
+                                    textView1.setText("GPSLoc: " + gpsProvider.getGPSLocation().getLatitude() + "   " + gpsProvider.getGPSLocation().getLongitude() + "  Acc: " + gpsProvider.getGPSLocation().getAccuracy());
                                 if(gpsProvider.getNetworkLocation() != null)
-                                    textView2.setText("NetLoc: " + gpsProvider.getNetworkLocation().getLatitude() + "   " + gpsProvider.getNetworkLocation().getLongitude() + "Acc: " + gpsProvider.getNetworkLocation().getAccuracy());
+                                    textView2.setText("NetLoc: " + gpsProvider.getNetworkLocation().getLatitude() + "   " + gpsProvider.getNetworkLocation().getLongitude() + "  Acc: " + gpsProvider.getNetworkLocation().getAccuracy());
                             }
                         });
                     }
