@@ -3,6 +3,7 @@ package de.honeypot.honeypot;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
@@ -17,7 +18,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         SharedPreferences sharedPref = getSharedPreferences("settings", Context.MODE_PRIVATE);
-        String userName = sharedPref.getString("userName", "");
+        String userName = sharedPref.getString("userName", "1");
 
         // no saved userName
         if (userName.equals("")) {
@@ -35,6 +36,12 @@ public class MainActivity extends AppCompatActivity {
         viewPager.setAdapter(pagerAdapter);
 
         //final ActionBar actionBar = getSupportActionBar();
+
+        TabLayout tabLayout = (TabLayout) findViewById(R.id.tab_layout);
+        tabLayout.addTab(tabLayout.newTab().setText(getString(R.string.fragment_profile)));
+        tabLayout.addTab(tabLayout.newTab().setText(getString(R.string.fragment_friends)));
+        tabLayout.addTab(tabLayout.newTab().setText(getString(R.string.fragment_stats)));
+        tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
 
     }
 
