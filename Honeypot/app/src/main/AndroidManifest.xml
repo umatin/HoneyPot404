@@ -18,9 +18,6 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
-        <service   android:enabled="true"
-            android:name=".services.MainBackgroundService"/>
-
         <activity
             android:name=".MainActivity"
             android:screenOrientation="portrait">

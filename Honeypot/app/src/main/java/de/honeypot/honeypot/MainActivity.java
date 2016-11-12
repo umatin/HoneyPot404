@@ -17,7 +17,6 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 
 import de.honeypot.honeypot.handlers.*;
-import de.honeypot.honeypot.services.MainBackgroundService;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -64,8 +63,6 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        Intent service = new Intent(getApplicationContext(), MainBackgroundService.class);
-        this.startService(service);
     }
 
     // PagerAdapter
