@@ -13,6 +13,8 @@ import android.provider.Settings;
 import android.support.v4.app.ActivityCompat;
 import android.widget.Toast;
 
+import de.honeypot.honeypot.location.testing.GPSListener;
+
 /**
  * Created by Geosearchef on 12.11.2016.
  */
@@ -21,14 +23,23 @@ public class GPSProvider implements LocationListener {
 
     public static final boolean ALLOW_MOCK_LOCATION = false;
 
-    LocationManager locationManager;
-    Activity activity;
+    private GPSListener gpsListener;
 
-    Location currentLocation = null;
+    private LocationManager locationManager;
+    private Activity activity;
 
+    private Location currentLocationNetwork = null;
+    private Location currentLocationGPS = null;
 
-    public GPSProvider(Activity activity) {
+    public GPSProvider(Activity activity)
+    {
         this.activity = activity;
+        init();
+    }
+
+    public GPSProvider(Activity activity, GPSListener gpsListener) {
+        this.activity = activity;
+        this.gpsListener = gpsListener;
         init();
     }
 
@@ -63,7 +74,6 @@ public class GPSProvider implements LocationListener {
         }
 
         //Request updates for both providers
-        //TODO: maybe remove network provider
         locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, this);
         locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, this);
     }
@@ -72,19 +82,41 @@ public class GPSProvider implements LocationListener {
 
     public Location getLastKnownLocation()
     {
-        return this.currentLocation;
+        //return this.currentLocation;
+        return null;//TODO:
     }
 
+    public Location getNetworkLocation()
+    {
+        return currentLocationNetwork;
+    }
 
+    public Location getGPSLocation()
+    {
+        return currentLocationGPS;
+    }
 
 
     @Override
     public void onLocationChanged(Location location) {
-        currentLocation = location;
 
         //TODO: use
-        location.getProvider();
-        location.getAccuracy();
+        if(location.getProvider().equals(LocationManager.GPS_PROVIDER))
+        {
+            currentLocationGPS = location;
+        }
+        else if(location.getProvider().equals(LocationManager.NETWORK_PROVIDER))
+        {
+            currentLocationNetwork = location;
+        }
+
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                if(gpsListener != null)
+                    gpsListener.onUpdate(getLastKnownLocation());
+            }
+        }).start();
     }
 
     @Override
