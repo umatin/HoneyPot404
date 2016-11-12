@@ -1,7 +1,5 @@
-package de.honeypot.honeypot;
+package de.honeypot.honeypot.handlers;
 
-import android.content.Context;
-import android.content.SharedPreferences;
 import android.util.Log;
 
 import org.apache.http.HttpResponse;

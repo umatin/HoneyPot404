@@ -1,4 +1,4 @@
-package de.honeypot.honeypot;
+package de.honeypot.honeypot.handlers;
 
 import org.json.JSONArray;
 
