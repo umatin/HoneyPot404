@@ -2,6 +2,7 @@ package de.honeypot.honeypot.services;
 
 import android.app.Activity;
 
+import de.honeypot.honeypot.handlers.WifiP2PHandler;
 import de.honeypot.honeypot.services.wifip2p.WifiP2PComponent;
 import de.honeypot.honeypot.services.wifip2p.WifiP2PListener;
 
@@ -32,7 +33,7 @@ public class WifiDirect {
     {
         @Override
         public void deviceDiscovered(String address) {
-            //TODO:
+            WifiP2PHandler.compareToNearby(address);
         }
 
         @Override

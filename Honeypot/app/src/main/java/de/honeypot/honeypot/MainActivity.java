@@ -80,7 +80,6 @@ public class MainActivity extends AppCompatActivity {
             int detectedUserID = getIntent().getIntExtra("detectedUserID", -1);
             WifiP2PHandler.openUser(detectedUserID);
         }
-        WifiP2PHandler.informUser(new NearbyObject(10, 10, "sd"));
     }
 
     // PagerAdapter

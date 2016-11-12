@@ -155,6 +155,9 @@ public class Network {// bitte auf alle Methoden mit einem eigenen Task/Thread z
         {
             JSONObject json = get("/nearby/"+lat+"/"+lon+"?token="+token);
 
+            if(json == null)
+                return new NearbyObject[0];
+
             JSONArray nearby = json.getJSONArray("nearby");
             NearbyObject[] res = new NearbyObject[nearby.length()];
             for(int i = 0;i < nearby.length();i++)
