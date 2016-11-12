@@ -22,7 +22,7 @@ import de.honeypot.honeypot.location.testing.GPSListener;
 
 public class GPSProvider implements LocationListener {
 
-    public static final boolean ALLOW_MOCK_LOCATION = false;
+    public static final boolean ALLOW_MOCK_LOCATION = true;
 
     private GPSListener gpsListener;
 
@@ -61,7 +61,7 @@ public class GPSProvider implements LocationListener {
             activity.startActivityForResult(intent, 1);
         }
 
-        if(Settings.Secure.getString(activity.getContentResolver(), Settings.Secure.ALLOW_MOCK_LOCATION).equals("1") || ALLOW_MOCK_LOCATION)
+        if(!Settings.Secure.getString(activity.getContentResolver(), Settings.Secure.ALLOW_MOCK_LOCATION).equals("0") && !ALLOW_MOCK_LOCATION)
         {
             activity.runOnUiThread(new Runnable() {
                 @Override
@@ -70,9 +70,9 @@ public class GPSProvider implements LocationListener {
                 }
             });
 
-            try{Thread.sleep(200);}catch(InterruptedException e){}
+            try{Thread.sleep(1000);}catch(InterruptedException e){}
 
-            System.exit(-1);//TODO: overkill
+            System.exit(-1);
         }
 
 
@@ -84,19 +84,23 @@ public class GPSProvider implements LocationListener {
             @Override
             public void run() {
 
-                if (ActivityCompat.checkSelfPermission(activity, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(activity, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                    // TODO: Consider calling
+                if (ActivityCompat.checkSelfPermission(activity, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED || ActivityCompat.checkSelfPermission(activity, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+
+                    ActivityCompat.requestPermissions(activity, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 0);
+                    ActivityCompat.requestPermissions(activity, new String[]{Manifest.permission.ACCESS_COARSE_LOCATION}, 0);
                     //    ActivityCompat#requestPermissions
                     // here to request the missing permissions, and then overriding
                     //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
                     //                                          int[] grantResults)
                     // to handle the case where the user grants the permission. See the documentation
                     // for ActivityCompat#requestPermissions for more details.
-                    return;
+                    System.exit(5);
                 }
-
-                locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, GPSProvider.this);
-                locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, GPSProvider.this);
+                else
+                {
+                    locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, GPSProvider.this);
+                    locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, GPSProvider.this);
+                }
             }
         });
     }
@@ -105,8 +109,10 @@ public class GPSProvider implements LocationListener {
 
     public Location getLastKnownLocation()
     {
-        //return this.currentLocation;
-        return null;//TODO:
+        if(currentLocationGPS != null && ((System.currentTimeMillis() - currentLocationGPS.getTime()) < 10000 && currentLocationGPS.getAccuracy() < currentLocationNetwork.getAccuracy()))
+            return getGPSLocation();
+        else
+            return getNetworkLocation();
     }
 
     public Location getNetworkLocation()
@@ -123,7 +129,6 @@ public class GPSProvider implements LocationListener {
     @Override
     public void onLocationChanged(Location location) {
 
-        //TODO: use
         if(location.getProvider().equals(LocationManager.GPS_PROVIDER))
         {
             currentLocationGPS = location;
