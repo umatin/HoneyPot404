@@ -1,4 +1,4 @@
-package de.honeypot.honeypot.handlers;
+package de.honeypot.honeypot.services;
 
 import android.app.Activity;
 

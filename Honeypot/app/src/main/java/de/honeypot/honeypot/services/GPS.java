@@ -1,4 +1,4 @@
-package de.honeypot.honeypot.handlers;
+package de.honeypot.honeypot.services;
 
 import de.honeypot.honeypot.location.GPSProvider;
 
@@ -14,6 +14,6 @@ public class GPS {
 
     public static void init()
     {
-
+        
     }
 }

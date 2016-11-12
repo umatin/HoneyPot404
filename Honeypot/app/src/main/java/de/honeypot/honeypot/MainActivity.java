@@ -17,13 +17,17 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 
 import de.honeypot.honeypot.handlers.*;
-import de.honeypot.honeypot.services.MainBackgroundService;
+import de.honeypot.honeypot.services.GPS;
+import de.honeypot.honeypot.services.WifiDirect;
 
 public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        //Init for getting device mac address as soon as possible
+        WifiDirect.init(this);
 
         SharedPreferences sharedPref = getSharedPreferences("settings", Context.MODE_PRIVATE);
         String userName = sharedPref.getString("userName", "");
@@ -35,6 +39,8 @@ public class MainActivity extends AppCompatActivity {
             finish();
             return;
         }
+
+        GPS.init();
 
         if(ContextCompat.checkSelfPermission(this, Manifest.permission.INTERNET)== PackageManager.PERMISSION_DENIED){
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.INTERNET}, 2811);
@@ -63,9 +69,6 @@ public class MainActivity extends AppCompatActivity {
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
-
-        startService(new Intent(this, MainBackgroundService.class));
     }
 
     // PagerAdapter

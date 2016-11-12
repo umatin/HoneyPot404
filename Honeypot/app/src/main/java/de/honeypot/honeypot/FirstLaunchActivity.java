@@ -3,7 +3,6 @@ package de.honeypot.honeypot;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.provider.Settings;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -13,7 +12,6 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
-import android.view.animation.AnimationSet;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.Button;
 import android.widget.EditText;
@@ -35,7 +33,7 @@ import org.json.JSONObject;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
-import de.honeypot.honeypot.handlers.WifiDirect;
+import de.honeypot.honeypot.services.WifiDirect;
 
 public class FirstLaunchActivity extends AppCompatActivity {
 
@@ -131,9 +129,6 @@ public class FirstLaunchActivity extends AppCompatActivity {
                 keyPress();
             }
         });
-
-        //Init for getting device mac address
-        WifiDirect.init(this);
     }
 
     // handle key press
