@@ -44,16 +44,20 @@ public class SetPictureActivity extends AppCompatActivity {
 
             Uri uri = data.getData();
 
-            try {
+            try
+            {
                 Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), uri);
 
                 openIntent();
 
                 compressPicture(bitmap, this);
 
-            } catch (IOException e) {
+            }
+            catch (IOException e)
+            {
                 e.printStackTrace();
             }
+            //MainActivity.sharedPref.edit().putBoolean("alreadyHasPicture", true);
         }
     }
 

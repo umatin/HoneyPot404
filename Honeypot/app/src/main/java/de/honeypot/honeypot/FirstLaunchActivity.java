@@ -231,13 +231,12 @@ public class FirstLaunchActivity extends AppCompatActivity {
         t2.start();
     }
 
-    private void openIntent() {
+    private void openIntent()
+    {
         FirstLaunchActivity.this.runOnUiThread(new Runnable() {
             public void run() {
-                /*Intent mainActivity = new Intent(FirstLaunchActivity.this, MainActivity.class);
-                startActivity(mainActivity);*/
-                Intent setPictureActivity = new Intent(FirstLaunchActivity.this, SetPictureActivity.class);
-                startActivity(setPictureActivity);
+                Intent mainActivity = new Intent(FirstLaunchActivity.this, MainActivity.class);
+                startActivity(mainActivity);
             }
         });
     }
