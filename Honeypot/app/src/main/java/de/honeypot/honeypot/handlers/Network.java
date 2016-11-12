@@ -13,6 +13,8 @@ import org.json.JSONObject;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
+import de.honeypot.honeypot.data.NearbyObject;
+
 /**
  * Created by Tobias on 12.11.2016.
  */
@@ -30,6 +32,9 @@ public class Network {// bitte auf alle Methoden mit einem eigenen Task/Thread z
     {
         token=Token;
         id=ID;
+
+        System.out.println("Token: " + token);
+        System.out.println("ID: " + id);
     }
 
     static public boolean isInternt(){      //hat das handy internet
@@ -97,7 +102,7 @@ public class Network {// bitte auf alle Methoden mit einem eigenen Task/Thread z
     public static User profile(String id_else){        //Profile eines anderen aufrufen --> Rückgabewerte in den Attributen
         try {
             HttpClient client = new DefaultHttpClient();
-            HttpGet request = new HttpGet(link+"/profile?id="+id+"&token="+token);
+            HttpGet request = new HttpGet(link+"/profile/"+id+"?token="+token);
             HttpResponse response = client.execute(request);
             ByteArrayOutputStream out = new ByteArrayOutputStream();
             response.getEntity().writeTo(out);
@@ -144,45 +149,55 @@ public class Network {// bitte auf alle Methoden mit einem eigenen Task/Thread z
         return profile(id);
     }
 
-    public static String[] nearby(double lat, double lon){     //gibt die geräte in der nähe aus
+    //Returns string array of devices nearby
+    public static NearbyObject[] nearby(double lat, double lon){
+        try
+        {
+            JSONObject json = get("/nearby/"+lat+"/"+lon+"?token="+token);
+
+            JSONArray nearby = json.getJSONArray("nearby");
+            NearbyObject[] res = new NearbyObject[nearby.length()];
+            for(int i = 0;i < nearby.length();i++)
+            {
+                JSONObject o = (JSONObject) nearby.get(i);
+                res[i] = new NearbyObject(o.getInt("id"), o.getDouble("distance"), o.getString("device"));
+            }
+
+            return res;
+        }
+        catch(JSONException e){e.printStackTrace();return null;}
+    }
+
+
+    public static JSONObject get(String rq)
+    {
+        System.out.println("Requesting " + rq);
+
+        rq = link + rq;
 
         try{
             HttpClient client = new DefaultHttpClient();
-            HttpGet request = new HttpGet(link+"/nearby/"+lat+"/"+lon+"?token="+token);
+            HttpGet request = new HttpGet(rq);
             HttpResponse response = client.execute(request);
             ByteArrayOutputStream out = new ByteArrayOutputStream();
             response.getEntity().writeTo(out);
             String responseString = out.toString();
+            JSONObject json = new JSONObject(responseString);
             out.close();
-
-            JSONObject jObject = new JSONObject(responseString);
-
-
-            JSONArray jsonArray = jObject.getJSONArray("nearby");//jObject.optJSONArray("nearby");
-
-
-
-
-            String[] ids = new String[jsonArray.length()];
-            for(int i =0; i<jsonArray.length(); i++){
-                ids[i]=jsonArray.getString(i);
-            }
-
-
-
-            return ids;
-
-
-
-        } catch (IOException e) { // falls kein Internet --> leeres array
+            return json;
+        } catch(Exception e) {
             e.printStackTrace();
-            return new String[0];
-        }catch (JSONException e) {
-            e.printStackTrace();
-            return new String[0];
+            return null;
         }
-
     }
+
+    public static JSONObject postRequest(String rq)
+    {
+        //TODO:
+        return null;
+    }
+
+
     public static void capture(){
         //TODO
     }

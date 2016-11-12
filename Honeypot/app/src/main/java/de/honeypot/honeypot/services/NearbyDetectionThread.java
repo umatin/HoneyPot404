@@ -2,6 +2,9 @@ package de.honeypot.honeypot.services;
 
 import android.location.Location;
 
+import org.json.JSONObject;
+
+import de.honeypot.honeypot.data.NearbyObject;
 import de.honeypot.honeypot.handlers.Network;
 
 /**
@@ -11,6 +14,8 @@ import de.honeypot.honeypot.handlers.Network;
 public class NearbyDetectionThread extends Thread {
 
     public static final int DETECTION_PERIOD = 10000;
+
+    public static NearbyObject[] nearbyObjects = new NearbyObject[0];//Access synchronized
 
     public NearbyDetectionThread()
     {
@@ -36,7 +41,12 @@ public class NearbyDetectionThread extends Thread {
                 longitude = location.getLongitude();
             }
 
-            String[] data = Network.nearby(latitude, longitude);
+            NearbyObject[] near = Network.nearby(latitude, longitude);
+
+            synchronized (nearbyObjects)
+            {
+                nearbyObjects = near;
+            }
         }
     }
 }

@@ -19,6 +19,9 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.widget.Toast;
+
+import de.honeypot.honeypot.data.NearbyObject;
+import de.honeypot.honeypot.handlers.WifiP2PHandler;
 import de.honeypot.honeypot.services.GPS;
 import de.honeypot.honeypot.services.WifiDirect;
 import de.honeypot.honeypot.handlers.Network;
@@ -26,10 +29,13 @@ import de.honeypot.honeypot.handlers.Network;
 public class MainActivity extends AppCompatActivity {
 
     public static SharedPreferences sharedPref;
+    public static MainActivity instance;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        MainActivity.instance = this;
 
         //Init for getting device mac address as soon as possible
         WifiDirect.init(this);
@@ -77,6 +83,7 @@ public class MainActivity extends AppCompatActivity {
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        WifiP2PHandler.informUser(new NearbyObject(0, 0, "asdasd"));
     }
 
     // PagerAdapter
