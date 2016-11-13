@@ -1,12 +1,11 @@
 package de.honeypot.honeypot;
 
 import android.Manifest;
-import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
-import android.preference.PreferenceFragment;
+import android.os.AsyncTask;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
@@ -17,19 +16,50 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
-import android.view.MenuItem;
 import android.widget.Toast;
 
-import de.honeypot.honeypot.data.NearbyObject;
-import de.honeypot.honeypot.handlers.WifiP2PHandler;
-import de.honeypot.honeypot.services.GPS;
-import de.honeypot.honeypot.services.WifiDirect;
-import de.honeypot.honeypot.handlers.Network;
+import java.io.IOException;
+import java.util.logging.Logger;
+
+import de.honeypot.honeypot.handlers.NetworkAdapter;
+import de.honeypot.honeypot.services.GPSAdapter;
+import de.honeypot.honeypot.services.WifiDirectAdapter;
 
 public class MainActivity extends AppCompatActivity {
 
-    public static SharedPreferences sharedPref;
+    public final static Logger mainLogger = Logger.getLogger("MainActivity");
+    public static SharedPreferences sharedPreferences;
     public static MainActivity instance;
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        WifiDirectAdapter.getInstance().stop();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        GPSAdapter.getInstance().start(this);
+        WifiDirectAdapter.getInstance().start(this);
+    }
+
+    private class AuthenticationTask extends AsyncTask<String, Integer, Exception> {
+        protected Exception doInBackground(String... names) {
+            if (names.length < 1) return null;
+            try {
+                NetworkAdapter.getInstance().authenticate(names[0]);
+            } catch (IOException e) {
+                return e;
+            }
+            return null;
+        }
+        protected void onPostExecute(Exception e) {
+            if (e != null) {
+                Toast.makeText(MainActivity.this, "Do hasch kein Internet", Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,31 +67,21 @@ public class MainActivity extends AppCompatActivity {
 
         MainActivity.instance = this;
 
-        //Init for getting device mac address as soon as possible
-        WifiDirect.init(this);
-
-        MainActivity.sharedPref = getSharedPreferences("settings", Context.MODE_PRIVATE);
-        String userName = sharedPref.getString("userName", "");
-
-        Network.init(sharedPref.getString("token", ""), sharedPref.getString("id", ""));
-
-
-
-
-        // no saved userName
-        if (userName.equals("")) {
-            Intent firstLaunchActivity = new Intent(this, FirstLaunchActivity.class);
-            startActivity(firstLaunchActivity);
-            finish();
-            return;
+        sharedPreferences = getSharedPreferences("settings", Context.MODE_PRIVATE);
+        if (!sharedPreferences.contains("name")) {
+            Intent setupActivity = new Intent(this, FirstLaunchActivity.class);
+            startActivity(setupActivity);
         }
 
-        GPS.init(this);
+        AuthenticationTask authTask = new AuthenticationTask();
+        authTask.execute(sharedPreferences.getString("name", "default"));
 
-        if(ContextCompat.checkSelfPermission(this, Manifest.permission.INTERNET)== PackageManager.PERMISSION_DENIED){
+        //GPSAdapter.init(this);
+
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.INTERNET) == PackageManager.PERMISSION_DENIED) {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.INTERNET}, 2811);
         }
-        if(ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)== PackageManager.PERMISSION_DENIED){
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED) {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 2812);
         }
 
@@ -83,7 +103,8 @@ public class MainActivity extends AppCompatActivity {
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        WifiP2PHandler.informUser(new NearbyObject(0, 0, "asdasd"));
+
+        //WifiP2PHandler.informUser(new NearbyObject(0, 0, "asdasd"));
     }
 
     // PagerAdapter

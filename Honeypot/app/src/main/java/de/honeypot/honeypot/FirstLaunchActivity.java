@@ -3,6 +3,7 @@ package de.honeypot.honeypot;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -33,7 +34,9 @@ import org.json.JSONObject;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
-import de.honeypot.honeypot.services.WifiDirect;
+import de.honeypot.honeypot.handlers.NetworkAdapter;
+import de.honeypot.honeypot.services.WifiDirectAdapter;
+//import de.honeypot.honeypot.services.WifiDirect;
 
 public class FirstLaunchActivity extends AppCompatActivity {
 
@@ -50,6 +53,7 @@ public class FirstLaunchActivity extends AppCompatActivity {
     private static Animation fadeIn, fadeOut;
 
     private static int randomCount = 0;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -115,7 +119,7 @@ public class FirstLaunchActivity extends AppCompatActivity {
                 if ((event.getAction() == KeyEvent.ACTION_DOWN) &&
                         (keyCode == KeyEvent.KEYCODE_ENTER)) {
                     // Perform action on key press
-                    keyPress();
+                    startAuthentication();
                     return true;
                 }
                 return false;
@@ -126,124 +130,33 @@ public class FirstLaunchActivity extends AppCompatActivity {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                keyPress();
+                startAuthentication();
             }
         });
     }
 
     // handle key press
-    private void keyPress() {
+    private void startAuthentication() {
         final String name = nameField.getText().toString().trim();
 
-        if (name.equals("")){
+        if (name.equals("")) {
             return;
         }
 
-        final String android_id = WifiDirect.getOwnDeviceAddress();
-
-        editor = sharedPref.edit();
-        editor.putString("userName", name);
-        editor.putString("device", android_id);
-
-        editor.apply();
-
-        Log.i("name", name);
-        Log.i("device", android_id);
-
-        //TODO alles auf die cloud laden...
-
-        Thread t2 = new Thread() {  //HTTP get anfrage über einen eigenen Thread
-            public void run() {
-
-                HttpClient client = new DefaultHttpClient();
-
-                String link = "http://honeypot4431.cloudapp.net";
-                HttpGet request = new HttpGet(link + "/register?device=" + android_id + "&name=" + name);
-                // replace with your url
-
-                HttpResponse response;
-                try {
-                    response = client.execute(request);
-                    //ResponseUtils.toString(response);
-
-                    ByteArrayOutputStream out = new ByteArrayOutputStream();
-                    response.getEntity().writeTo(out);
-                    String responseString = out.toString();
-                    out.close();
-
-                    Log.i("Response of GET request", responseString);
-                    //JsonReader reader = new JsonReader(response);
-                    JSONObject jObject = new JSONObject(responseString);
-
-                    String token = jObject.getString("token");
-                    String id = jObject.getString("id");
-                    System.err.println(token);
-                    Log.i("token", token);
-                    Log.i("id", id);
-
-                    //SharedPreferences.Editor editor = sharedPref.edit();
-                    FirstLaunchActivity.this.editor.putString("token", token);
-                    editor.putString("id", id);
-
-                    editor.apply();
-
-                } catch (ClientProtocolException e) {  // falls kein Internet --> zurück
-
-                    e.printStackTrace();
-                    editor.putString("userName", "");
-                    editor.apply();
-                    //return false;
-                    //openIntent();
-                    FirstLaunchActivity.this.runOnUiThread(new Runnable() {
-                        public void run() {
-                            Toast.makeText(FirstLaunchActivity.this, "Do hasch kein Internet", Toast.LENGTH_SHORT).show();
-                        }
-                    });
-
-                    return;
-
-                    //Problem: fehler abfangen
-                } catch (IOException e) {
-
-                    e.printStackTrace();
-                    //return false;
-                    //openIntent();
-
-                    editor.putString("userName", "");
-                    editor.apply();
-
-                    FirstLaunchActivity.this.runOnUiThread(new Runnable() {
-                        public void run() {
-                            Toast.makeText(FirstLaunchActivity.this, "Do hasch kein Internet", Toast.LENGTH_SHORT).show();
-                        }
-                    });
-
-                    return;
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                    Log.i("Server Fehler", "");
-                }
-                openIntent();
-
-            }
-        };
-
-        t2.start();
-    }
-
-    private void openIntent()
-    {
-        FirstLaunchActivity.this.runOnUiThread(new Runnable() {
-            public void run() {
-                Intent mainActivity = new Intent(FirstLaunchActivity.this, MainActivity.class);
-                startActivity(mainActivity);
-            }
-        });
+        MainActivity.sharedPreferences.edit().putString("name", name).apply();
+        finish();
     }
 
 
     @Override
     protected void onPause() {
-        System.exit(0);
+        super.onPause();
+        WifiDirectAdapter.getInstance().stop();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        WifiDirectAdapter.getInstance().start(this);
     }
 }

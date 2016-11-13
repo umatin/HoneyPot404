@@ -7,7 +7,7 @@ import android.widget.TextView;
 
 import de.honeypot.honeypot.R;
 import de.honeypot.honeypot.services.location.GPSProvider;
-
+/*
 public class GPSProviderTestActivity extends AppCompatActivity {
 
     TextView textView1, textView2;
@@ -47,3 +47,4 @@ public class GPSProviderTestActivity extends AppCompatActivity {
         }).start();
     }
 }
+*/

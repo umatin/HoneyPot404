@@ -16,7 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 
-import de.honeypot.honeypot.services.WifiDirect;
+import de.honeypot.honeypot.services.WifiDirectAdapter;
 
 /**
  * Created by user on 12.11.16.
@@ -96,7 +96,7 @@ public class NetworkAdapter {
     private static NetworkAdapter instance;
 
     public static NetworkAdapter getInstance() {
-        if (instance == null) new NetworkAdapter();
+        if (instance == null) instance = new NetworkAdapter();
         return instance;
     }
 
@@ -104,6 +104,7 @@ public class NetworkAdapter {
         client = new DefaultHttpClient();
     }
 
+    private final String ownProfileRequest = "/profile?token=%s";
     private final String profileRequest = "/profile/%d?token=%s";
     private final String registerRequest = "/register?name=%s&device=%s";
     private final String nearbyRequest = "/nearby/%f/%f?token=%s";
@@ -115,7 +116,7 @@ public class NetworkAdapter {
     private String device;
 
     public void authenticate(String name) throws IOException {
-        String deviceID = WifiDirect.getOwnDeviceAddress();
+        String deviceID = WifiDirectAdapter.getInstance().getDeviceHash();
         String req = String.format(registerRequest, name, deviceID);
 
         try {
@@ -124,18 +125,20 @@ public class NetworkAdapter {
             reader.beginObject();
             while (reader.hasNext()) {
                 String itemName = reader.nextName();
-                switch (name) {
+                switch (itemName) {
                     case "token":
                         token = reader.nextString();
                         break;
                     case "device":
                         device = reader.nextString();
                         break;
+                    default:
+                        reader.skipValue();
                 }
             }
             reader.endObject();
 
-            networkLogger.fine("Authenticated as " + token);
+            networkLogger.info("Authenticated as " + token);
 
             reader.close();
         } catch (IOException e) {
@@ -151,8 +154,17 @@ public class NetworkAdapter {
         return device;
     }
 
+    public Profile getOwnProfile() {
+        String req = String.format(ownProfileRequest, token);
+        return parseProfileRequest(req);
+    }
+
     public Profile getProfile(int id) {
         String req = String.format(profileRequest, id, token);
+        return parseProfileRequest(req);
+    }
+
+    private Profile parseProfileRequest(String req)  {
         Profile profile = new Profile(this);
 
         try {
@@ -162,9 +174,9 @@ public class NetworkAdapter {
 
             reader.beginObject();
             while (reader.hasNext()) {
-                String nextName = reader.nextName();
+                String nextEntry = reader.nextName();
 
-                switch (nextName) {
+                switch (nextEntry) {
                     case "id":
                         profile.id = reader.nextInt();
                         break;
@@ -186,11 +198,13 @@ public class NetworkAdapter {
                     case "picture":
                         profile.picture = reader.nextString();
                         break;
+                    default:
+                        reader.skipValue();
                 }
             }
             reader.endObject();
 
-            networkLogger.fine("Fetched profile " + profile.toString());
+            networkLogger.info("Fetched profile " + profile.toString());
 
             reader.close();
         } catch (IOException e) {
@@ -228,6 +242,8 @@ public class NetworkAdapter {
                             case "date":
                                 device.date = reader.nextString();
                                 break;
+                            default:
+                                reader.skipValue();
                         }
                         devices.add(device);
                     }
@@ -236,7 +252,7 @@ public class NetworkAdapter {
             }
             reader.endObject();
 
-            networkLogger.fine("Fetched " + devices.size() + " devices");
+            networkLogger.info("Fetched " + devices.size() + " devices");
 
             reader.close();
         } catch (IOException e) {
@@ -248,13 +264,15 @@ public class NetworkAdapter {
 
     private JsonReader retrieveJSON(String request) throws IOException {
         request = defaultEndpoint + request;
-        networkLogger.fine("Sending network request: " + request);
+        networkLogger.info("Sending network request: " + request);
 
         HttpGet httpGet = new HttpGet(request);
         HttpResponse httpResponse = client.execute(httpGet);
         HttpEntity httpEntity = httpResponse.getEntity();
 
-        return new JsonReader(new InputStreamReader(httpEntity.getContent()));
+        networkLogger.info("Reecived " + httpEntity.getContentLength() + " bytes");
+
+        return new JsonReader(new InputStreamReader(httpEntity.getContent(), "UTF-8"));
     }
 }
 

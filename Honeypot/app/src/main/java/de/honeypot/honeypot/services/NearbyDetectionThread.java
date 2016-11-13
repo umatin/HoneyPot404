@@ -2,10 +2,7 @@ package de.honeypot.honeypot.services;
 
 import android.location.Location;
 
-import org.json.JSONObject;
-
 import de.honeypot.honeypot.data.NearbyObject;
-import de.honeypot.honeypot.handlers.Network;
 
 /**
  * Created by Geosearchef on 12.11.2016.
@@ -31,7 +28,7 @@ public class NearbyDetectionThread extends Thread {
         {
             try{Thread.sleep(DETECTION_PERIOD);}catch(InterruptedException e){}
 
-            Location location = GPS.getLocation();
+            Location location = null;//GPS.getLocation();
             double latitude = 0.0;
             double longitude = 0.0;
 
@@ -41,7 +38,7 @@ public class NearbyDetectionThread extends Thread {
                 longitude = location.getLongitude();
             }
 
-            NearbyObject[] near = Network.nearby(latitude, longitude);
+            NearbyObject[] near = null;// = Network.nearby(latitude, longitude);
 
             synchronized (nearbyObjects)
             {
