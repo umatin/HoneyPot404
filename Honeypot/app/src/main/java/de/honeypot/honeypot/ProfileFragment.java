@@ -164,6 +164,8 @@ public class ProfileFragment extends Fragment {
         switch (item.getItemId()) {
 
             case R.id.edit_profile:
+                Intent pictureActivity = new Intent(getContext(), SetPictureActivity.class);
+                startActivity(pictureActivity);
                 return true;
             case R.id.refresh:
                 updateData();
