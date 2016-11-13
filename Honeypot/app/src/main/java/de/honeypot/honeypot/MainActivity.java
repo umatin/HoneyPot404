@@ -17,6 +17,9 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
 import android.widget.Toast;
 
@@ -33,6 +36,12 @@ public class MainActivity extends AppCompatActivity {
     public final static Logger mainLogger = Logger.getLogger("MainActivity");
     public static SharedPreferences sharedPreferences;
     public static MainActivity instance;
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.friends_menu, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
 
     @Override
     public void onPause() {
@@ -61,6 +70,7 @@ public class MainActivity extends AppCompatActivity {
             }
             return null;
         }
+
         protected void onPostExecute(Exception e) {
             if (e != null) {
                 Toast.makeText(MainActivity.this, "You are not connected to the internet.", Toast.LENGTH_SHORT).show();
@@ -77,6 +87,7 @@ public class MainActivity extends AppCompatActivity {
             }
             return true;
         }
+
         public void onPostExecute(Boolean success) {
             String text = success ? "You just captured a hotspot!" : "This hotspot is not capturable.";
             Toast.makeText(MainActivity.this, text, Toast.LENGTH_SHORT).show();
