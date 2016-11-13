@@ -6,6 +6,7 @@ import android.net.wifi.ScanResult;
 import java.util.List;
 import java.util.logging.Logger;
 
+import de.honeypot.honeypot.handlers.HotspotHandler;
 import de.honeypot.honeypot.handlers.WlanDetection;
 
 /**
@@ -13,54 +14,44 @@ import de.honeypot.honeypot.handlers.WlanDetection;
  */
 
 public class WifiScanner extends Thread { // Background thread which gives an event if a network could be a pi
+    private final static int SCAN_INTERVAL = 20000;
+    private final static String WIFI_BUZZWORD = "honeypot";
+    private final static Logger logger = Logger.getLogger("WifiScanner");
 
-    private boolean abbruch = false;
-    private WlanDetection wifi;
-    private Context mContext;
+    private static WifiScanner instance;
 
-
-    private final static Logger logger = Logger.getLogger("WlanDetection");
-
-    public WifiScanner(Context context) {
-        mContext = context;
-        wifi = new WlanDetection(mContext);
-        start();
-
+    public static WifiScanner getInstance() {
+        if (instance == null) instance = new WifiScanner();
+        return instance;
     }
 
     public void run() {
+        while (true) {
+            WlanDetection.getInstance().startSearch();
+            List<ScanResult> results = WlanDetection.getInstance().getResults();
 
-        while (!abbruch) {
-            wifi.StartSearching();
-            List<ScanResult> wifiresults = wifi.getResults();
-
-            for (int i = 0; i < wifiresults.size(); i++) {
-                if (wifiresults.get(i).SSID.substring(0, 7).equals("honeypot")) {
-                    //wifi detected --> conquer
-                    logger.info("Found Wifi Network " + wifiresults.get(i).SSID);
-
+            for (int i = 0; i < results.size(); i++) {
+                String ssid = results.get(i).SSID;
+                if (ssid.length() == 32 && ssid.substring(0, 7).equals(WIFI_BUZZWORD)) {
+                    new HotspotHandler().informUser(ssid);
                 }
             }
 
             try {
-                Thread.sleep(1000 * 20); // alle 20 Sekunden nach dem pi scannen
+                Thread.sleep(SCAN_INTERVAL);
             } catch (InterruptedException e) {
-                e.printStackTrace();
+                return;
             }
-
-
         }
     }
 
 
     public void stopService() {
-        abbruch = true;
+        WlanDetection.getInstance().stop();
     }
 
-    public void startService() {
-        abbruch = false;
-        start();
+    public void startService(Context context) {
+        WlanDetection.getInstance().start(context);
+        if (!this.isAlive()) start();
     }
-
-
 }

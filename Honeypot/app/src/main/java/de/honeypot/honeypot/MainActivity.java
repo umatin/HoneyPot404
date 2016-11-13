@@ -38,6 +38,7 @@ public class MainActivity extends AppCompatActivity {
     public void onPause() {
         super.onPause();
         WifiDirectAdapter.getInstance().stop();
+        WifiScanner.getInstance().stopService();
     }
 
     @Override
@@ -45,6 +46,7 @@ public class MainActivity extends AppCompatActivity {
         super.onResume();
         GPSAdapter.getInstance().start(this);
         WifiDirectAdapter.getInstance().start(this);
+        WifiScanner.getInstance().startService(this);
     }
 
     private class AuthenticationTask extends AsyncTask<String, Integer, Exception> {

@@ -7,6 +7,7 @@ import android.content.IntentFilter;
 import android.net.wifi.ScanResult;
 import android.net.wifi.WifiManager;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -16,51 +17,51 @@ import java.util.logging.Logger;
  */
 
 public class WlanDetection {
-
-
     private final static Logger LOGGER = Logger.getLogger("WlanDetection");
-    WifiManager myWifi;
-    List<ScanResult> results;
+    private WifiManager wifi;
+    private List<ScanResult> results;
+    private Context context;
 
-    public WlanDetection(Context context)
-    {
-        myWifi = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);
-        myWifi.setWifiEnabled(true);
+    private static WlanDetection instance;
+
+    private BroadcastReceiver receiver;
+
+    public static WlanDetection getInstance() {
+        if (instance == null) instance = new WlanDetection();
+        return instance;
+    }
+
+    public void start(Context context) {
+        if (this.context != null) stop();
+
+        results = new ArrayList<>();
+        wifi = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);
+        wifi.setWifiEnabled(true);
         IntentFilter filter = new IntentFilter();
         filter.addAction(WifiManager.SCAN_RESULTS_AVAILABLE_ACTION);
 
-        context.registerReceiver(new BroadcastReceiver() {
+        receiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
-                results = myWifi.getScanResults();
-
-                ///For DEBUG purposes remove in the end
-                testSelf();
-
+                results = wifi.getScanResults();
             }
-        }, filter);
+        };
 
-    }
-    public void StartSearching()
-    {
-        myWifi.startScan();
-    }
-    public List<ScanResult> getResults()
-    {
-        return results;
+        context.registerReceiver(receiver, filter);
     }
 
-    public void testSelf()
-    {
-        int size = results.size();
-        for(int i=0; i < size; ++i) {
-            LOGGER.log(Level.INFO, "  BSSID       =" + results.get(i).BSSID+ "\n");
-            LOGGER.log(Level.INFO, "  SSID        =" + results.get(i).SSID+ "\n");
-            LOGGER.log(Level.INFO, "  Capabilities=" + results.get(i).capabilities+ "\n");
-            LOGGER.log(Level.INFO, "  Frequency   =" + results.get(i).frequency+ "\n");
-            LOGGER.log(Level.INFO, "  Level       =" + results.get(i).level+ "\n");
-            LOGGER.log(Level.INFO, "---------------" + "\n");
+    public void startSearch() {
+        wifi.startScan();
+    }
+
+    public void stop() {
+        if (context != null) {
+            context.unregisterReceiver(receiver);
+            context = null;
         }
     }
 
+    public List<ScanResult> getResults() {
+        return results;
+    }
 }
