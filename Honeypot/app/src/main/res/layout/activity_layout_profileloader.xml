@@ -6,8 +6,6 @@
     android:layout_height="match_parent"
     tools:context="de.honeypot.honeypot.handlers.ProfileLoader">
 
-
-
     <fragment android:name="de.honeypot.honeypot.ProfileFragment"
         android:id="@+id/fragment"
         android:layout_width="match_parent"
