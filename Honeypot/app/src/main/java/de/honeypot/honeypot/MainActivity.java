@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.AsyncTask;
+import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
@@ -60,14 +61,34 @@ public class MainActivity extends AppCompatActivity {
         }
         protected void onPostExecute(Exception e) {
             if (e != null) {
-                Toast.makeText(MainActivity.this, "Do hasch kein Internet", Toast.LENGTH_SHORT).show();
+                Toast.makeText(MainActivity.this, "You are not connected to the internet.", Toast.LENGTH_SHORT).show();
             }
+        }
+    }
+
+    private class CaptureTask extends AsyncTask<String, Void, Boolean> {
+        public Boolean doInBackground(String... ssid) {
+            try {
+                NetworkAdapter.getInstance().capture(ssid[0]);
+            } catch (Exception e) {
+                return false;
+            }
+            return true;
+        }
+        public void onPostExecute(Boolean success) {
+            String text = success ? "You just captured a hotspot!" : "This hotspot is not capturable.";
+            Toast.makeText(MainActivity.this, text, Toast.LENGTH_SHORT).show();
         }
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        if (getIntent().getBooleanExtra("capture", false)) {
+            String ssid = getIntent().getStringExtra("ssid");
+            new CaptureTask().execute(ssid);
+        }
 
         MainActivity.instance = this;
 

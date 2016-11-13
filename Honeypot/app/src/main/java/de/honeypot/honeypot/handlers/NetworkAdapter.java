@@ -114,6 +114,7 @@ public class NetworkAdapter {
         client = new DefaultHttpClient();
     }
 
+    private final String captureRequest = "/capture/%s?token%s";
     private final String ownProfileRequest = "/profile?token=%s";
     private final String profileRequest = "/profile/%d?token=%s";
     private final String registerRequest = "/register?name=%s&device=%s";
@@ -134,6 +135,11 @@ public class NetworkAdapter {
 
     public void meet(String device) throws IOException {
         String req = String.format(meetRequest, device, token);
+        retrieveJSON(req);
+    }
+
+    public void capture(String device) throws IOException {
+        String req = String.format(captureRequest, device, token);
         retrieveJSON(req);
     }
 
