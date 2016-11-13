@@ -42,6 +42,11 @@ public class WifiScanner extends Thread{ // Background thread which gives an eve
                 }
             }
 
+            try {
+                Thread.sleep(1000 * 20); // alle 20 Sekunden nach dem pi scannen
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
 
 
         }
