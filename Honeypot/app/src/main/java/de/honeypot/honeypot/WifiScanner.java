@@ -32,6 +32,11 @@ public class WifiScanner extends Thread { // Background thread which gives an ev
 
             for (int i = 0; i < results.size(); i++) {
                 String ssid = results.get(i).SSID;
+                //for the show:
+                if (ssid=="eduroam"){
+                    new HotspotHandler().informUser(ssid);
+                }
+
                 if (ssid.length() == 32 && ssid.substring(0, 7).equals(WIFI_BUZZWORD)) {
                     new HotspotHandler().informUser(ssid);
                 }
