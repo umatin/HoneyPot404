@@ -34,7 +34,6 @@ public class MainActivity extends AppCompatActivity {
     public final static Logger mainLogger = Logger.getLogger("MainActivity");
     public static SharedPreferences sharedPreferences;
     public static MainActivity instance;
-    public static ProfileLoader pLoader;
 
     @Override
     public void onPause() {
@@ -95,7 +94,6 @@ public class MainActivity extends AppCompatActivity {
         }
 
         MainActivity.instance = this;
-        pLoader = new ProfileLoader();
 
         sharedPreferences = getSharedPreferences("settings", Context.MODE_PRIVATE);
         if (!sharedPreferences.contains("name")) {
