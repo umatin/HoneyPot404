@@ -9,6 +9,7 @@
     <ListView
         android:divider="@color/colorBackground"
         android:id="@+id/listView"
+        android:listSelector="@color/colorBackground"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
 
