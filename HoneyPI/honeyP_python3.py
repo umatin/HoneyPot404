@@ -52,6 +52,7 @@ class handleEverything():
         name=""
         color=""
         times=""
+        ssid=self.newSSID()
         #b = False
         #self.starthotspotservices()
         while True:
@@ -62,9 +63,9 @@ class handleEverything():
             
             
 
-            if counter%7==0: #alle sieben 
-                ssid, name, color, times = self.getSSID_Name_Color_Time()
-                print(ssid, name, color, times)
+            if counter%10==0: #alle sieben 
+                name, color, times = self.getSSID_Name_Color_Time()
+                print(name, color, times)
                 #b=True
                 
 
@@ -77,7 +78,7 @@ class handleEverything():
                 content = [name, "Conquerable!!!"]
                 #b=False
             else:#if not time+60-time()<=0:
-                newSSID();
+                #newSSID();
 
                 content = [name, "Next: " + str(times+180-int(time.time()))]
                 #b=True
@@ -98,31 +99,43 @@ class handleEverything():
     def getSSID_Name_Color_Time(self):#capture --> timestamp
         response= self.makeHTTPRequest("/hotspot/fetch?token="+self.token)
         print(response)
-        j = json.loads(response)
+        if response:
+            j = json.loads(response)
 
-        #timestr = j["capture"]  #timestamp string
-        
-        return j["ssid"], j["name"], j["color"], int(j["capture"])
+            #timestr = j["capture"]  #timestamp string
+            
+            return j["name"], j["color"], int(j["capture"])#j["ssid"],
+        else:
+            return self.name, self.name, self.times
     
 
     def getToken(self):
         response=self.makeHTTPRequest("/hotspot/setup?secret=lebonbon")
         print(str(response))
-        j = json.loads(str(response))
-        return j["token"]
+        if response:
+            j = json.loads(str(response))
+            return j["token"]
+        else:
+            quit()
 
     def newSSID(self):
-        response=self.makeHTTPRequest("/hotspot/update?toker="+self.token)
+        response=self.makeHTTPRequest("/hotspot/update?token="+self.token)
         print("New SSID for wifi")
         print(str(response))
-        j = json.loads(str(response))
-        return j["ssid"]
+        if response:
+            j = json.loads(str(response))
+            return j["ssid"]
+        else:
+            return ssid
         
 
 
-    def makeHTTPRequest(self, sublink): #exp what to show/ who captured and get token and 
-        s=urllib.request.urlopen(link + sublink).read()
-        return s.decode("utf-8")
+    def makeHTTPRequest(self, sublink): #exp what to show/ who captured and get token and
+        try:
+            s=urllib.request.urlopen(link + sublink).read()
+            return s.decode("utf-8")
+        except:
+            return False
 
 
                         #array mit 2 elementen
