@@ -22,6 +22,7 @@ public class DetectionHandler  implements WifiPeerListener {
     private final static Logger logger = Logger.getLogger("DetectionHandler");
 
     public void informUser(NetworkAdapter.NearbyDevice detectedUser) {
+
         NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(MainActivity.instance);
 
         notificationBuilder.setSmallIcon(android.R.drawable.btn_minus);

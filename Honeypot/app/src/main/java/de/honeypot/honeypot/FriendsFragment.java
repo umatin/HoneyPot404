@@ -1,6 +1,7 @@
 package de.honeypot.honeypot;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -29,20 +30,13 @@ import java.util.logging.Logger;
 
 import de.honeypot.honeypot.handlers.CircularImage;
 import de.honeypot.honeypot.handlers.NetworkAdapter;
+import de.honeypot.honeypot.handlers.ProfileLoader;
 
 import static de.honeypot.honeypot.handlers.StorageHandler.readFileToBitmap;
 
 public class FriendsFragment extends Fragment {
     private static final Logger logger = Logger.getLogger("FriendsFragment");
     private ListView friendlist;
-
-    @Override
-    public void setUserVisibleHint(boolean isVisibleToUser) {
-        super.setUserVisibleHint(isVisibleToUser);
-
-        if (isVisibleToUser)
-            updateData();
-    }
 
     public void updateData() {
         NetworkAdapter.Profile base = null;
@@ -70,9 +64,12 @@ public class FriendsFragment extends Fragment {
         friendlist.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                NetworkAdapter.Profile item = (NetworkAdapter.Profile) adapterView.getItemAtPosition(i);
-                getActivity().getIntent().putExtra("profile", item.getID());
-                updateData();
+                Bundle extras = new Bundle();
+                extras.putInt("profile", ((NetworkAdapter.Profile) adapterView.getItemAtPosition(i)).getID());
+                Intent intent = new Intent(getActivity(), ProfileLoader.class);
+                intent.putExtras(extras);
+                startActivity(intent);
+
             }
         });
         updateData();

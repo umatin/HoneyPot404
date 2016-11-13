@@ -29,14 +29,6 @@ public class ProfileFragment extends Fragment {
     private TextView textName, textScore, textFriends;
 
     @Override
-    public void setUserVisibleHint(boolean isVisibleToUser) {
-        super.setUserVisibleHint(isVisibleToUser);
-
-        if (isVisibleToUser)
-            updateData();
-    }
-
-    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {
         setHasOptionsMenu(true);
         return inflater.inflate(R.layout.activity_profile_fragment, parent, false);
@@ -81,12 +73,7 @@ public class ProfileFragment extends Fragment {
     public void updateData() {
         if (getActivity() != null && getActivity().getIntent() != null) {
             int profileID = getActivity().getIntent().getIntExtra("profile", -1);
-            String device = getActivity().getIntent().getStringExtra("device");
             if (profileID != -1) {
-                if (getActivity().getIntent().getBooleanExtra("discover", false)) {
-                    MeetTask meetTask = new MeetTask();
-                    meetTask.execute(device);
-                }
                 ProfileTask profileTask = new ProfileTask();
                 profileTask.execute(profileID);
             } else {
@@ -103,22 +90,6 @@ public class ProfileFragment extends Fragment {
         textScore.setText(profile.getPoints() + "");
         textName.setText("" + profile.getName());
         textFriends.setText("" + profile.getFriendsCount() + "");
-    }
-
-    private class MeetTask extends AsyncTask<String, Void, Boolean> {
-        public Boolean doInBackground(String... device) {
-            try {
-                NetworkAdapter.getInstance().meet(device[0]);
-            } catch (IOException e) {
-                return true;
-            }
-            return false;
-        }
-
-        public void onPostExecute(Boolean result) {
-            String text = result ? "Oh, ah known friend!" : "You have just met another honeybee!";
-            Snackbar.make(getView(), text, Snackbar.LENGTH_LONG).show();
-        }
     }
 
     private class OwnProfileTask extends AsyncTask<Void, Void, NetworkAdapter.Profile> {

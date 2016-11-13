@@ -27,6 +27,7 @@ import java.io.IOException;
 import java.util.logging.Logger;
 
 import de.honeypot.honeypot.handlers.NetworkAdapter;
+import de.honeypot.honeypot.handlers.ProfileLoader;
 import de.honeypot.honeypot.services.GPSAdapter;
 import de.honeypot.honeypot.services.DeviceDetection;
 import de.honeypot.honeypot.services.WifiDirectAdapter;
@@ -47,7 +48,7 @@ public class MainActivity extends AppCompatActivity {
     public void onPause() {
         super.onPause();
         WifiDirectAdapter.getInstance().stop();
-        //WifiScanner.getInstance().stopService();
+        WifiScanner.getInstance().stopService();
     }
 
     @Override
@@ -55,7 +56,7 @@ public class MainActivity extends AppCompatActivity {
         super.onResume();
         GPSAdapter.getInstance().start(this);
         WifiDirectAdapter.getInstance().start(this);
-        //WifiScanner.getInstance().startService(this);
+        WifiScanner.getInstance().startService(this);
     }
 
     private class AuthenticationTask extends AsyncTask<String, Integer, Exception> {
@@ -94,6 +95,22 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    private class MeetTask extends AsyncTask<String, Void, Boolean> {
+        public Boolean doInBackground(String... device) {
+            try {
+                NetworkAdapter.getInstance().meet(device[0]);
+            } catch (IOException e) {
+                return true;
+            }
+            return false;
+        }
+
+        public void onPostExecute(Boolean result) {
+            String text = result ? "Oh, ah known friend!" : "You have just met another honeybee!";
+            Toast.makeText(MainActivity.this, text, Toast.LENGTH_LONG).show();
+        }
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -101,6 +118,20 @@ public class MainActivity extends AppCompatActivity {
         if (getIntent().getBooleanExtra("capture", false)) {
             String ssid = getIntent().getStringExtra("ssid");
             new CaptureTask().execute(ssid);
+        }
+
+        if (getIntent().getIntExtra("profile", -1) != -1) {
+            if (getIntent().getBooleanExtra("discover", false)) {
+                String device = getIntent().getStringExtra("device");
+                MeetTask meetTask = new MeetTask();
+                meetTask.execute(device);
+            }
+
+            Bundle extras = new Bundle();
+            extras.putInt("profile", getIntent().getIntExtra("profile", -1));
+            Intent intent = new Intent(this, ProfileLoader.class);
+            intent.putExtras(extras);
+            startActivity(intent);
         }
 
         MainActivity.instance = this;
