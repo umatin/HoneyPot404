@@ -67,7 +67,7 @@ public class DetectionHandler  implements WifiPeerListener {
         if (detectedUser == null) {
             logger.info("Detected device is not your honey");
         } else {
-            logger.info("Detected device is nearly your honey");
+            logger.info("Detected device is your honey");
             informUser(detectedUser);
         }
     }
