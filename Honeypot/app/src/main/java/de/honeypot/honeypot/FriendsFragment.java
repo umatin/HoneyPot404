@@ -6,6 +6,8 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.ListFragment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -14,10 +16,12 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.io.IOException;
 import java.util.List;
@@ -32,7 +36,15 @@ public class FriendsFragment extends Fragment {
     private static final Logger logger = Logger.getLogger("FriendsFragment");
     private ListView friendlist;
 
-    private void updateData() {
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+
+        if (isVisibleToUser)
+            updateData();
+    }
+
+    public void updateData() {
         NetworkAdapter.Profile base = null;
         if (getActivity().getIntent() != null) {
             int profileID = getActivity().getIntent().getIntExtra("profile", -1);
@@ -55,6 +67,14 @@ public class FriendsFragment extends Fragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         friendlist = (ListView) view.findViewById(R.id.listView);
+        friendlist.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                NetworkAdapter.Profile item = (NetworkAdapter.Profile) adapterView.getItemAtPosition(i);
+                getActivity().getIntent().putExtra("profile", item.getID());
+                updateData();
+            }
+        });
         updateData();
     }
 

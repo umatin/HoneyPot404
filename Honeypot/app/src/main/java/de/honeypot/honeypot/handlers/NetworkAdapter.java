@@ -91,13 +91,13 @@ public class NetworkAdapter {
         }
 
         public Profile(NetworkAdapter source) {
-            this.source = source;
-            this.id = -1;
+            this(source, -1);
         }
 
         public Profile(NetworkAdapter source, int id) {
             this.id = id;
             this.source = source;
+            this.friends = new ArrayList<>();
         }
     }
 

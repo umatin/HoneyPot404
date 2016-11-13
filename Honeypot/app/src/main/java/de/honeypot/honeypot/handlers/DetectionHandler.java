@@ -20,8 +20,7 @@ import de.honeypot.honeypot.services.wifip2p.WifiPeerListener;
 
 public class DetectionHandler  implements WifiPeerListener {
     private final static Logger logger = Logger.getLogger("DetectionHandler");
-
-
+    
     public void informUser(NetworkAdapter.NearbyDevice detectedUser) {
         NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(MainActivity.instance);
 
@@ -33,6 +32,7 @@ public class DetectionHandler  implements WifiPeerListener {
         //Add intent
         Intent resultIntent = new Intent(MainActivity.instance, MainActivity.class);
         resultIntent.putExtra("profile", detectedUser.getID());
+        resultIntent.putExtra("discover", true);
         resultIntent.putExtra("device", detectedUser.getDeviceID());
         TaskStackBuilder stackBuilder = TaskStackBuilder.create(MainActivity.instance);
         stackBuilder.addParentStack(MainActivity.class);
