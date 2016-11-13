@@ -17,7 +17,9 @@
     <uses-permission
         android:name="android.permission.CHANGE_WIFI_STATE"
         android:required="true" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission
+        android:name="android.permission.WRITE_EXTERNAL_STORAGE"
+        android:required="true" />
 
     <application
         android:allowBackup="true"
@@ -36,20 +38,17 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".services.location.testing.GPSProviderTestActivity"
-            android:label="Honeypot GPSTest">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
-        <activity
             android:name=".FirstLaunchActivity"
             android:screenOrientation="portrait" />
-        <activity android:name=".SetPictureActivity" />
-        <activity android:name=".SettingsLoader" />
-        <activity android:name=".handlers.ProfileLoader"></activity>
+        <activity
+            android:name=".SetPictureActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".SettingsLoader"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".handlers.ProfileLoader"
+            android:screenOrientation="portrait" />
     </application>
 
 </manifest>
