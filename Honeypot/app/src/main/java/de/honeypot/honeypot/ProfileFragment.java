@@ -71,7 +71,7 @@ public class ProfileFragment extends Fragment {
     }
 
     public void updateData() {
-        if (getActivity() != null && getActivity().getIntent() != null) {
+        if (getActivity() != null && getActivity().getIntent() != null && getActivity().getIntent().getBooleanExtra("loader", false)) {
             int profileID = getActivity().getIntent().getIntExtra("profile", -1);
             if (profileID != -1) {
                 ProfileTask profileTask = new ProfileTask();
