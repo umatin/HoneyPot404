@@ -90,13 +90,6 @@ public class FriendsFragment extends Fragment {
         }
     }
 
-
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        inflater.inflate(R.menu.friends_menu, menu);
-        super.onCreateOptionsMenu(menu, inflater);
-    }
-
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
