@@ -11,7 +11,7 @@ import de.honeypot.honeypot.handlers.NetworkAdapter;
 
 public class DeviceDetection extends Thread {
 
-    public static final int DETECTION_PERIOD = 10000;
+    public static final int DETECTION_PERIOD = 100000;
 
     public static NetworkAdapter.NearbyDevice[] nearbyDevices = new NetworkAdapter.NearbyDevice[0];
 

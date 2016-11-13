@@ -29,6 +29,14 @@ public class ProfileFragment extends Fragment {
     private TextView textName, textScore, textFriends;
 
     @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+
+        if (isVisibleToUser)
+            updateData();
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {
         setHasOptionsMenu(true);
         return inflater.inflate(R.layout.activity_profile_fragment, parent, false);
@@ -70,13 +78,15 @@ public class ProfileFragment extends Fragment {
 
     }
 
-    private void updateData() {
-        if (getActivity().getIntent() != null) {
+    public void updateData() {
+        if (getActivity() != null && getActivity().getIntent() != null) {
             int profileID = getActivity().getIntent().getIntExtra("profile", -1);
             String device = getActivity().getIntent().getStringExtra("device");
             if (profileID != -1) {
-                MeetTask meetTask = new MeetTask();
-                meetTask.execute(device);
+                if (getActivity().getIntent().getBooleanExtra("discover", false)) {
+                    MeetTask meetTask = new MeetTask();
+                    meetTask.execute(device);
+                }
                 ProfileTask profileTask = new ProfileTask();
                 profileTask.execute(profileID);
             } else {
@@ -154,7 +164,8 @@ public class ProfileFragment extends Fragment {
         switch (item.getItemId()) {
 
             case R.id.edit_profile:
-                startActivity(new Intent(getActivity(), SettingsLoader.class));
+                getActivity().getIntent().putExtra("profile", -1);
+                updateData();
                 return true;
         }
 
