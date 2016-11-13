@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.os.AsyncTask;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -18,10 +19,12 @@ import android.widget.TextView;
 import java.io.File;
 
 import de.honeypot.honeypot.handlers.CircularImage;
+import de.honeypot.honeypot.handlers.NetworkAdapter;
 
 import static de.honeypot.honeypot.handlers.StorageHandler.readFileToBitmap;
 
 public class ProfileFragment extends Fragment {
+    private TextView textName, textScore, textFriends;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {
@@ -54,16 +57,50 @@ public class ProfileFragment extends Fragment {
         }
 
         // initialize Views
-        TextView textViewName = (TextView) getView().findViewById(R.id.textViewName);
-        TextView textViewScore = (TextView) getView().findViewById(R.id.textViewScore);
-        TextView textViewMeetCount = (TextView) getView().findViewById(R.id.textViewMeetCount);
+        textName = (TextView) getView().findViewById(R.id.textViewName);
+        textScore = (TextView) getView().findViewById(R.id.textViewScore);
+        textFriends = (TextView) getView().findViewById(R.id.textViewMeetCount);
 
+        OwnProfileTask task = new OwnProfileTask();
+        task.execute();
+    }
 
-        String name = "", score = "", meetcount = "";
+    private void setProfile(NetworkAdapter.Profile profile) {
+        textScore.setText("" + profile.getPoints());
+        textName.setText("" + profile.getName());
+        textFriends.setText("" + profile.getFriendsCount());
+    }
 
-        textViewName.setText(getResources().getString(R.string.name) + ":\n" + name);
-        textViewScore.setText(getResources().getString(R.string.score) + ":\n" + score);
-        textViewMeetCount.setText(getResources().getString(R.string.meet_count) + ":\n" + meetcount);
+    private class OwnProfileTask extends AsyncTask<Void, Void, NetworkAdapter.Profile> {
+        public NetworkAdapter.Profile doInBackground(Void... v) {
+            try {
+                return NetworkAdapter.getInstance().getOwnProfile();
+            } catch (Exception e) {
+                return null;
+            }
+        }
+
+        public void onPostExecute(NetworkAdapter.Profile results) {
+            if (results != null) {
+                setProfile(results);
+            }
+        }
+    }
+
+    private class ProfileTask extends AsyncTask<Integer, Void, NetworkAdapter.Profile> {
+        public NetworkAdapter.Profile doInBackground(Integer... ids) {
+            try {
+                return NetworkAdapter.getInstance().getProfile(ids[0]);
+            } catch (Exception e) {
+                return null;
+            }
+        }
+
+        public void onPostExecute(NetworkAdapter.Profile results) {
+            if (results != null) {
+                setProfile(results);
+            }
+        }
     }
 
     @Override

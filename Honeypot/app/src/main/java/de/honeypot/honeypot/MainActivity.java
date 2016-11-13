@@ -23,6 +23,7 @@ import java.util.logging.Logger;
 
 import de.honeypot.honeypot.handlers.NetworkAdapter;
 import de.honeypot.honeypot.services.GPSAdapter;
+import de.honeypot.honeypot.services.DeviceDetection;
 import de.honeypot.honeypot.services.WifiDirectAdapter;
 
 public class MainActivity extends AppCompatActivity {
@@ -49,6 +50,8 @@ public class MainActivity extends AppCompatActivity {
             if (names.length < 1) return null;
             try {
                 NetworkAdapter.getInstance().authenticate(names[0]);
+                DeviceDetection thread = new DeviceDetection();
+                thread.start();
             } catch (IOException e) {
                 return e;
             }
@@ -104,7 +107,6 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        //WifiP2PHandler.informUser(new NearbyObject(0, 0, "asdasd"));
     }
 
     // PagerAdapter

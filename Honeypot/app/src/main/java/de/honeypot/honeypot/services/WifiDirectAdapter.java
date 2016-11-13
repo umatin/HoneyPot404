@@ -4,6 +4,7 @@ import android.app.Activity;
 
 import java.util.logging.Logger;
 
+import de.honeypot.honeypot.handlers.DetectionHandler;
 import de.honeypot.honeypot.services.wifip2p.WifiPeerService;
 import de.honeypot.honeypot.services.wifip2p.WifiPeerListener;
 
@@ -22,7 +23,7 @@ public class WifiDirectAdapter {
         return instance;
     }
 
-    private WifiDirectListener listener;
+    private WifiPeerListener listener;
 
     public void start(Activity activity) {
         directAdapterLogger.info("Starting up Wi-Fi Direct in activity " + activity.toString());
@@ -36,30 +37,12 @@ public class WifiDirectAdapter {
 
     public WifiDirectAdapter()
     {
-        listener = new WifiDirectListener();
+        listener = new DetectionHandler();
         WifiPeerService.getInstance(listener).startUpdateThread();
     }
 
     public String getDeviceHash()
     {
         return WifiPeerService.getInstance(listener).getHashedMAC();
-    }
-
-    public class WifiDirectListener implements WifiPeerListener
-    {
-        @Override
-        public void deviceDiscovered(String address) {
-
-        }
-
-        @Override
-        public void onWifiEnabled() {
-
-        }
-
-        @Override
-        public void onWifiDisabled() {
-
-        }
     }
 }

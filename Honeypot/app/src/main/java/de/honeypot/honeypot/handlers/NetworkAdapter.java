@@ -72,6 +72,10 @@ public class NetworkAdapter {
             return points;
         }
 
+        public int getFriendsCount() {
+            return friends.size();
+        }
+
         public Profile[] getFriends() {
             Profile[] profiles = new Profile[friends.size()];
 
@@ -214,9 +218,36 @@ public class NetworkAdapter {
         return profile;
     }
 
+    private NearbyDevice parseNearbyDevice(JsonReader reader) throws IOException {
+        NearbyDevice device = new NearbyDevice(this);
+        reader.beginObject();
+        while (reader.hasNext()) {
+            String next = reader.nextName();
+            switch (next) {
+                case "id":
+                    device.id = reader.nextInt();
+                    break;
+                case "device":
+                    device.deviceId = reader.nextString();
+                    break;
+                case "distance":
+                    device.distance = reader.nextDouble();
+                    break;
+                case "date":
+                    device.date = reader.nextString();
+                    break;
+                default:
+                    reader.skipValue();
+            }
+        }
+        reader.endObject();
+        return device;
+    }
+
+
     public NearbyDevice[] getNearbyDevices(double latitude, double longitude) {
         List<NearbyDevice> devices = new ArrayList<>();
-        String req = String.format(nearbyRequest, latitude, longitude, token);
+        String req = String.format(nearbyRequest, latitude, longitude, token).replace(',', '.');
 
         try {
             JsonReader reader = retrieveJSON(req);
@@ -227,27 +258,11 @@ public class NetworkAdapter {
                 if (nextName.equals("nearby")) {
                     reader.beginArray();
                     while (reader.hasNext()) {
-                        NearbyDevice device = new NearbyDevice(this);
-                        nextName = reader.nextName();
-                        switch (nextName) {
-                            case "id":
-                                device.id = reader.nextInt();
-                                break;
-                            case "device":
-                                device.deviceId = reader.nextString();
-                                break;
-                            case "distance":
-                                device.distance = reader.nextDouble();
-                                break;
-                            case "date":
-                                device.date = reader.nextString();
-                                break;
-                            default:
-                                reader.skipValue();
-                        }
-                        devices.add(device);
+                        devices.add(parseNearbyDevice(reader));
                     }
                     reader.endArray();
+                } else {
+                    reader.skipValue();
                 }
             }
             reader.endObject();
@@ -270,7 +285,7 @@ public class NetworkAdapter {
         HttpResponse httpResponse = client.execute(httpGet);
         HttpEntity httpEntity = httpResponse.getEntity();
 
-        networkLogger.info("Reecived " + httpEntity.getContentLength() + " bytes");
+        networkLogger.info("Received " + httpEntity.getContentLength() + " bytes");
 
         return new JsonReader(new InputStreamReader(httpEntity.getContent(), "UTF-8"));
     }

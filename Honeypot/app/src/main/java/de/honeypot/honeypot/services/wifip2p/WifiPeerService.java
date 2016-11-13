@@ -43,20 +43,17 @@ public class WifiPeerService {
 
     private WifiPeerListener wifiPeerListener;
 
-    public WifiPeerService(WifiPeerListener wifiPeerListener)
-    {
+    public WifiPeerService(WifiPeerListener wifiPeerListener) {
         logger.info("Initializing peer service");
         this.wifiPeerListener = wifiPeerListener;
         receiver = new WifiDirectBroadCastReceiver();
     }
 
-    public void startUpdateThread()
-    {
+    public void startUpdateThread() {
         new UpdateThread().start();
     }
 
-    public void scan()
-    {
+    public void scan() {
         logger.info("Scanning for peers");
         peers.clear();
 
@@ -73,8 +70,7 @@ public class WifiPeerService {
         });
     }
 
-    public void start(Activity a)
-    {
+    public void start(Activity a) {
         if (host != null) {
             stop();
         }
@@ -95,8 +91,7 @@ public class WifiPeerService {
         host.registerReceiver(receiver, intentFilter);
     }
 
-    public void stop()
-    {
+    public void stop() {
         logger.info("Stopping peer service");
         //manager.stopPeerDiscovery(channel, null);
         host.unregisterReceiver(receiver);
@@ -113,9 +108,8 @@ public class WifiPeerService {
             peers.addAll(wifiP2pDeviceList.getDeviceList());
 
 
-            for(int i = 0;i < peers.size();i++)
-            {
-                String hash = calculateHash(((WifiP2pDevice)peers.get(i)).deviceAddress);
+            for (int i = 0; i < peers.size(); i++) {
+                String hash = calculateHash(peers.get(i).deviceAddress);
                 wifiPeerListener.deviceDiscovered(hash);
             }
 
@@ -130,37 +124,29 @@ public class WifiPeerService {
 
 
             String action = intent.getAction();
-            if (WifiP2pManager.WIFI_P2P_STATE_CHANGED_ACTION.equals(action))
-            {
+            if (WifiP2pManager.WIFI_P2P_STATE_CHANGED_ACTION.equals(action)) {
                 int state = intent.getIntExtra(WifiP2pManager.EXTRA_WIFI_STATE, -1);
                 if (state == WifiP2pManager.WIFI_P2P_STATE_ENABLED) {
                     peerEnabled = true;
-                    if(wifiPeerListener != null)
+                    if (wifiPeerListener != null)
                         wifiPeerListener.onWifiEnabled();
-                }
-                else {
+                } else {
                     peerEnabled = false;
                     if (wifiPeerListener != null)
                         wifiPeerListener.onWifiEnabled();
                 }
 
                 logger.info("WifiDirect enabled: " + peerEnabled);
-            }
-            else if (WifiP2pManager.WIFI_P2P_PEERS_CHANGED_ACTION.equals(action))
-            {
+            } else if (WifiP2pManager.WIFI_P2P_PEERS_CHANGED_ACTION.equals(action)) {
                 if (manager != null) {
                     manager.requestPeers(channel, peerListListener);
                 }
 
                 logger.info("new devices discovered");
-            }
-            else if (WifiP2pManager.WIFI_P2P_CONNECTION_CHANGED_ACTION.equals(action))
-            {
+            } else if (WifiP2pManager.WIFI_P2P_CONNECTION_CHANGED_ACTION.equals(action)) {
 
-            }
-            else if (WifiP2pManager.WIFI_P2P_THIS_DEVICE_CHANGED_ACTION.equals(action))
-            {
-                if(ownMacAddress == null) {
+            } else if (WifiP2pManager.WIFI_P2P_THIS_DEVICE_CHANGED_ACTION.equals(action)) {
+                if (ownMacAddress == null) {
                     WifiP2pDevice ownDevice = intent.getParcelableExtra(WifiP2pManager.EXTRA_WIFI_P2P_DEVICE);
                     ownMacAddress = ownDevice.deviceAddress;
                     logger.info("Received mac address " + ownMacAddress);
@@ -172,13 +158,11 @@ public class WifiPeerService {
 
     public class UpdateThread extends Thread {
         @Override
-        public void run()
-        {
-            while(true)
-            {
+        public void run() {
+            while (true) {
                 try {
                     Thread.sleep(DISCOVERY_REQUEST_PERIOD);
-                } catch(InterruptedException e) {
+                } catch (InterruptedException e) {
                     return;
                 }
                 scan();
@@ -187,24 +171,24 @@ public class WifiPeerService {
     }
 
 
-    public String getHashedMAC()
-    {
-        while (ownMacAddress == null)
-        {
-            return "uhgotnomac";
+    public String getHashedMAC() {
+        while (ownMacAddress == null) {
+            try {
+                Thread.sleep(200);
+            } catch (Exception e) {
+
+            }
         }
 
         return calculateHash(ownMacAddress);
     }
 
-    public String calculateHash(String string)
-    {
+    public String calculateHash(String string) {
         try {
             MessageDigest digest = MessageDigest.getInstance("SHA1");
             byte[] hashed = digest.digest(string.getBytes());
             StringBuffer stringBuffer = new StringBuffer();
-            for(int i = 0;i < hashed.length;i++)
-            {
+            for (int i = 0; i < hashed.length; i++) {
                 stringBuffer.append(Integer.toString((hashed[i] & 0xff) + 0x100, 16).substring(1));
             }
             return stringBuffer.toString();
@@ -215,8 +199,7 @@ public class WifiPeerService {
         return null;
     }
 
-    public boolean isPeerEnabled()
-    {
+    public boolean isPeerEnabled() {
         return peerEnabled;
     }
 
