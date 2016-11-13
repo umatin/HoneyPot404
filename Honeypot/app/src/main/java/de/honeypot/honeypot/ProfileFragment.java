@@ -34,7 +34,6 @@ public class ProfileFragment extends Fragment {
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
-
         Bitmap bitmap = readFileToBitmap(getContext().getExternalFilesDir(null) + File.separator +  "Profile.jpeg");
 
         int res = CircularImage.relativeImageRes(getActivity());
@@ -61,8 +60,16 @@ public class ProfileFragment extends Fragment {
         textScore = (TextView) getView().findViewById(R.id.textViewScore);
         textFriends = (TextView) getView().findViewById(R.id.textViewMeetCount);
 
-        OwnProfileTask task = new OwnProfileTask();
-        task.execute();
+
+        Bundle extras = getActivity().getIntent().getExtras();
+        String profileID = extras.getString("profile");
+        if (profileID != "") {
+            ProfileTask task = new ProfileTask();
+            task.execute(Integer.parseInt(profileID));
+        } else {
+            OwnProfileTask task = new OwnProfileTask();
+            task.execute();
+        }
     }
 
     private void setProfile(NetworkAdapter.Profile profile) {
