@@ -48,12 +48,12 @@ public class ProfileFragment extends Fragment {
         updateData();
     }
 
-    @Override
-    public void onViewCreated(View view, Bundle savedInstanceState) {
+    public void setProfilePic(View view, boolean isLocalUser)
+    {
         Bitmap bitmap = readFileToBitmap(getContext().getExternalFilesDir(null) + File.separator + "Profile.jpeg");
 
         int res = CircularImage.relativeImageRes(getActivity());
-        if (bitmap != null) {
+        if (isLocalUser) {
             bitmap = CircularImage.circularProfilePicture(bitmap, res, true);
         } else {
             int color = Color.parseColor("#ff4081");
@@ -65,11 +65,16 @@ public class ProfileFragment extends Fragment {
         }
 
         try {
-            ImageView imageView = (ImageView) getView().findViewById(R.id.imageView);
+            ImageView imageView = (ImageView) view.findViewById(R.id.imageView);
             imageView.setImageBitmap(bitmap);
         } catch (NullPointerException e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+
 
         // initialize Views
         textName = (TextView) getView().findViewById(R.id.textViewName);
@@ -89,8 +94,11 @@ public class ProfileFragment extends Fragment {
                 }
                 ProfileTask profileTask = new ProfileTask();
                 profileTask.execute(profileID);
+                setProfilePic(getView(), false);
+
             } else {
                 OwnProfileTask task = new OwnProfileTask();
+                setProfilePic(getView(), true);
                 task.execute();
             }
         } else {
