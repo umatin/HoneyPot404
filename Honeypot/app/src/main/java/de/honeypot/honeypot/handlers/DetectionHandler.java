@@ -10,6 +10,7 @@ import android.support.v7.app.NotificationCompat;
 import java.util.logging.Logger;
 
 import de.honeypot.honeypot.MainActivity;
+import de.honeypot.honeypot.R;
 import de.honeypot.honeypot.data.NearbyObject;
 import de.honeypot.honeypot.services.DeviceDetection;
 import de.honeypot.honeypot.services.wifip2p.WifiPeerListener;
@@ -20,7 +21,7 @@ public class DetectionHandler  implements WifiPeerListener {
     public void informUser(NetworkAdapter.NearbyDevice detectedUser) {
         NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(MainActivity.instance);
 
-        notificationBuilder.setSmallIcon(android.R.drawable.btn_minus);
+        notificationBuilder.setSmallIcon(R.drawable.ic_face_white_24dp);
         notificationBuilder.setContentTitle("A honeybee is around 'ya!");
         notificationBuilder.setContentText("A user has been found nearby, click hear, to see him and say hello.");
         notificationBuilder.build();

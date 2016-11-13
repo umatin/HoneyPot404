@@ -164,7 +164,8 @@ public class ProfileFragment extends Fragment {
         switch (item.getItemId()) {
 
             case R.id.edit_profile:
-                getActivity().getIntent().putExtra("profile", -1);
+                return true;
+            case R.id.refresh:
                 updateData();
                 return true;
         }
