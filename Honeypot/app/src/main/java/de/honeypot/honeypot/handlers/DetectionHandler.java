@@ -14,10 +14,6 @@ import de.honeypot.honeypot.data.NearbyObject;
 import de.honeypot.honeypot.services.DeviceDetection;
 import de.honeypot.honeypot.services.wifip2p.WifiPeerListener;
 
-/**
- * Created by Geosearchef on 12.11.2016.
- */
-
 public class DetectionHandler  implements WifiPeerListener {
     private final static Logger logger = Logger.getLogger("DetectionHandler");
 
@@ -30,7 +26,7 @@ public class DetectionHandler  implements WifiPeerListener {
         notificationBuilder.build();
 
         //Add intent
-        Intent resultIntent = new Intent(MainActivity.instance, MainActivity.class);
+        Intent resultIntent = new Intent(MainActivity.instance, ProfileLoader.class);
         resultIntent.putExtra("profile", detectedUser.getID());
         resultIntent.putExtra("discover", true);
         resultIntent.putExtra("device", detectedUser.getDeviceID());

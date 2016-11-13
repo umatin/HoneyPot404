@@ -24,6 +24,7 @@ import java.io.IOException;
 import java.util.logging.Logger;
 
 import de.honeypot.honeypot.handlers.NetworkAdapter;
+import de.honeypot.honeypot.handlers.ProfileLoader;
 import de.honeypot.honeypot.services.GPSAdapter;
 import de.honeypot.honeypot.services.DeviceDetection;
 import de.honeypot.honeypot.services.WifiDirectAdapter;
@@ -33,6 +34,7 @@ public class MainActivity extends AppCompatActivity {
     public final static Logger mainLogger = Logger.getLogger("MainActivity");
     public static SharedPreferences sharedPreferences;
     public static MainActivity instance;
+    public static ProfileLoader pLoader;
 
     @Override
     public void onPause() {
@@ -93,6 +95,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
         MainActivity.instance = this;
+        pLoader = new ProfileLoader();
 
         sharedPreferences = getSharedPreferences("settings", Context.MODE_PRIVATE);
         if (!sharedPreferences.contains("name")) {
