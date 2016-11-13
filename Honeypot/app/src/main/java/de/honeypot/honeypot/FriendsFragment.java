@@ -1,6 +1,7 @@
 package de.honeypot.honeypot;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -29,6 +30,7 @@ import java.util.logging.Logger;
 
 import de.honeypot.honeypot.handlers.CircularImage;
 import de.honeypot.honeypot.handlers.NetworkAdapter;
+import de.honeypot.honeypot.handlers.ProfileLoader;
 
 import static de.honeypot.honeypot.handlers.StorageHandler.readFileToBitmap;
 
@@ -71,8 +73,11 @@ public class FriendsFragment extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 NetworkAdapter.Profile item = (NetworkAdapter.Profile) adapterView.getItemAtPosition(i);
-                getActivity().getIntent().putExtra("profile", item.getID());
-                updateData();
+                Intent intent = new Intent(getActivity(), ProfileLoader.class);
+                //getActivity().getIntent().putExtra("profile", item.getID());
+                intent.putExtra("profile", item.getID());
+                startActivity(intent);
+                //updateData();
             }
         });
         updateData();
@@ -88,13 +93,6 @@ public class FriendsFragment extends Fragment {
             logger.info("Fetched profiles with length " + profiles.length);
             friendlist.setAdapter(new ProfileAdapter(getContext(), profiles));
         }
-    }
-
-
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        inflater.inflate(R.menu.friends_menu, menu);
-        super.onCreateOptionsMenu(menu, inflater);
     }
 
     @Override
