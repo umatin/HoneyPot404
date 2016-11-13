@@ -144,7 +144,17 @@ public class FirstLaunchActivity extends AppCompatActivity {
         }
 
         MainActivity.sharedPreferences.edit().putString("name", name).apply();
+        new UpdateNameTask().execute(name);
         finish();
+    }
+
+    private class UpdateNameTask extends AsyncTask<String, Void, Void> {
+        public Void doInBackground(String... name) {
+            try {
+                NetworkAdapter.getInstance().changeName(name[0]);
+            } catch (Exception e) {}
+            return null;
+        }
     }
 
 

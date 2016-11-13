@@ -83,7 +83,7 @@ public class NetworkAdapter {
                 profiles[i] = source.getProfile(friends.get(i));
             }
 
-            return null;
+            return profiles;
         }
 
         public byte[] getPicture() {
@@ -91,6 +91,12 @@ public class NetworkAdapter {
         }
 
         public Profile(NetworkAdapter source) {
+            this.source = source;
+            this.id = -1;
+        }
+
+        public Profile(NetworkAdapter source, int id) {
+            this.id = id;
             this.source = source;
         }
     }
@@ -113,11 +119,23 @@ public class NetworkAdapter {
     private final String registerRequest = "/register?name=%s&device=%s";
     private final String nearbyRequest = "/nearby/%f/%f?token=%s";
     private final String defaultEndpoint = "http://honeypot4431.cloudapp.net";
+    private final String meetRequest = "/meet/%s?token=%s";
+    private final String nameChangeRequest = "/settings/name?name=%s&token=%s";
 
     private HttpClient client;
 
     private String token;
     private String device;
+
+    public void changeName(String name) throws IOException {
+        String req = String.format(nameChangeRequest, name, token);
+        retrieveJSON(req);
+    }
+
+    public void meet(String device) throws IOException {
+        String req = String.format(meetRequest, device, token);
+        retrieveJSON(req);
+    }
 
     public void authenticate(String name) throws IOException {
         String deviceID = WifiDirectAdapter.getInstance().getDeviceHash();
@@ -283,6 +301,11 @@ public class NetworkAdapter {
 
         HttpGet httpGet = new HttpGet(request);
         HttpResponse httpResponse = client.execute(httpGet);
+
+        if (httpResponse.getStatusLine().getStatusCode() != 200) {
+            throw new IOException("Invalid status code");
+        }
+
         HttpEntity httpEntity = httpResponse.getEntity();
 
         networkLogger.info("Received " + httpEntity.getContentLength() + " bytes");

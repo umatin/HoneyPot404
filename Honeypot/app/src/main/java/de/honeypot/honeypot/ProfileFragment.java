@@ -5,6 +5,7 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.os.AsyncTask;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -17,6 +18,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.io.File;
+import java.io.IOException;
 
 import de.honeypot.honeypot.handlers.CircularImage;
 import de.honeypot.honeypot.handlers.NetworkAdapter;
@@ -33,8 +35,14 @@ public class ProfileFragment extends Fragment {
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+        updateData();
+    }
+
+    @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
-        Bitmap bitmap = readFileToBitmap(getContext().getExternalFilesDir(null) + File.separator +  "Profile.jpeg");
+        Bitmap bitmap = readFileToBitmap(getContext().getExternalFilesDir(null) + File.separator + "Profile.jpeg");
 
         int res = CircularImage.relativeImageRes(getActivity());
         if (bitmap != null) {
@@ -58,14 +66,23 @@ public class ProfileFragment extends Fragment {
         // initialize Views
         textName = (TextView) getView().findViewById(R.id.textViewName);
         textScore = (TextView) getView().findViewById(R.id.textViewScore);
-        textFriends = (TextView) getView().findViewById(R.id.textViewMeetCount);
+        textFriends = (TextView) getView().findViewById(R.id.textViewFriends);
 
+    }
 
-        Bundle extras = getActivity().getIntent().getExtras();
-        String profileID = extras.getString("profile");
-        if (profileID != "") {
-            ProfileTask task = new ProfileTask();
-            task.execute(Integer.parseInt(profileID));
+    private void updateData() {
+        if (getActivity().getIntent() != null) {
+            int profileID = getActivity().getIntent().getIntExtra("profile", -1);
+            String device = getActivity().getIntent().getStringExtra("device");
+            if (profileID != -1) {
+                MeetTask meetTask = new MeetTask();
+                meetTask.execute(device);
+                ProfileTask profileTask = new ProfileTask();
+                profileTask.execute(profileID);
+            } else {
+                OwnProfileTask task = new OwnProfileTask();
+                task.execute();
+            }
         } else {
             OwnProfileTask task = new OwnProfileTask();
             task.execute();
@@ -73,9 +90,25 @@ public class ProfileFragment extends Fragment {
     }
 
     private void setProfile(NetworkAdapter.Profile profile) {
-        textScore.setText("" + profile.getPoints());
+        textScore.setText(profile.getPoints() + "");
         textName.setText("" + profile.getName());
-        textFriends.setText("" + profile.getFriendsCount());
+        textFriends.setText("" + profile.getFriendsCount() + "");
+    }
+
+    private class MeetTask extends AsyncTask<String, Void, Boolean> {
+        public Boolean doInBackground(String... device) {
+            try {
+                NetworkAdapter.getInstance().meet(device[0]);
+            } catch (IOException e) {
+                return true;
+            }
+            return false;
+        }
+
+        public void onPostExecute(Boolean result) {
+            String text = result ? "Oh, ah known friend!" : "You have just met another honeybee!";
+            Snackbar.make(getView(), text, Snackbar.LENGTH_LONG).show();
+        }
     }
 
     private class OwnProfileTask extends AsyncTask<Void, Void, NetworkAdapter.Profile> {
